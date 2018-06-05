@@ -50,7 +50,7 @@ elif dim ==3:
     xlen = 43
     ylen = 41
     zlen = 42
-    tlen = 73
+    tlen = 216
     gridspacing = 3000
     with hp.File('3D_NAMvel_1hr_3km.hdf5','r') as loadfile:
         uin = loadfile['u'][:]
@@ -66,9 +66,9 @@ elif dim ==3:
     xin = np.linspace(-(xlen-1)/2*gridspacing,(xlen-1)/2*gridspacing,xlen)
     yin = np.linspace(-(ylen-1)/2*gridspacing,(ylen-1)/2*gridspacing,ylen)
     tstep =1.0/6.0
-    timein = np.linspace(0,72,73)
-    timewant = np.arange(0,72+tstep,tstep)                    
-    if timewant[-1]>72:
+    timein = np.linspace(0,(tlen-1),tlen)
+    timewant = np.arange(0,(tlen-1)+tstep,tstep)                    
+    if timewant[-1]>(tlen-1):
         timewant = timewant[0:-1]
         
     uwant = np.empty([np.size(timewant),zlen,ylen,xlen])
