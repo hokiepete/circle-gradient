@@ -4,24 +4,34 @@ import pandas as pd
 #import matplotlib.pyplot as plt
 #from numpy import genfromtxt
 print "Begin"
+'''
 xlen = 259
 ylen = 257
 zlen = 22
 tlen = 97
+'''
+xlen = 130
+ylen = 129
+zlen = 22
+tlen = 1291
+t0 = 0
+tf = 215
+xmin =-19350
+xmax = 19350
+ymin =-19200 
+ymax = 19200 
+zmin = 1400
+zmax = 5600
 dimension = 3
-if dimension == 3:
-    #mydata = np.genfromtxt('NAMvelocityData.csv', delimiter=',')
-    #mydata = pd.read_csv('NAMvelocityData.csv', delimiter=',',names=['uvar','vvar','wvar','na'])
-    #mydata = pd.read_csv('NAMPressureDatat=46-62hrs_Sept2017.csv', delimiter=',',names=['uvar','na'])
-    mydata = pd.read_csv('MyFile.csv', delimiter=',',names=['uvar','vvar','wvar','na'])
+data = 'vel'
+job = 'big'
+if data == 'vel' and dimension == 3 and job =='big':
+    savefile = hp.File('NAM_Velocity_t='+str(t0)+'-'+str(tf)+'hrs_Sept2017_300m_15min_Res.hdf5','w')
+    mydata = pd.read_csv('myfile.csv', delimiter=',',names=['uvar','vvar','wvar','na'])
     print "Data is in"
     uvar = mydata['uvar']
-    #vvar = mydata['vvar']
-    #wvar = mydata['wvar']
     del mydata
     u = np.empty([tlen,xlen,ylen,zlen])
-    #v = np.empty([tlen,xlen,ylen,zlen])
-    #w = np.empty([tlen,xlen,ylen,zlen])
     print 'ReArrange'
     index = 0
     for t in range(tlen):
@@ -30,26 +40,102 @@ if dimension == 3:
             for y in range(ylen):
                 for x in range(xlen):
                     u[t,x,y,z] = uvar[index]
-                    #v[t,x,y,z] = vvar[index]
-                    #w[t,x,y,z] = wvar[index]
                     index+=1
     
-    #del uvar, vvar, wvar
-    #with hp.File('NAM_Velocity_t=46-62hrs_Sept2017_300m_15min_Res.hdf5','w') as savefile:
-    with hp.File('NAM_Pressure_t=46-62hrs_Sept2017.hdf5','w') as savefile:
-        savefile.create_dataset('Pressure',shape=u.shape,data=u)
-        #savefile.create_dataset('u',shape=u.shape,data=u)
-        #savefile.create_dataset('v',shape=v.shape,data=v)
-        #savefile.create_dataset('w',shape=w.shape,data=w)
+    del uvar
+    savefile.create_dataset('u',shape=u.shape,data=u)        
+    del u
+
+    mydata = pd.read_csv('myfile.csv', delimiter=',',names=['uvar','vvar','wvar','na'])
+    print "Data is in"
+    vvar = mydata['vvar']
+    del mydata
+    v = np.empty([tlen,xlen,ylen,zlen])
+    print 'ReArrange'
+    index = 0
+    for t in range(tlen):
+        print t
+        for z in range(zlen):
+            for y in range(ylen):
+                for x in range(xlen):
+                    v[t,x,y,z] = vvar[index]
+                    index+=1
+    
+    del vvar
+    savefile.create_dataset('v',shape=v.shape,data=v)        
+    del v
+    
+    mydata = pd.read_csv('myfile.csv', delimiter=',',names=['uvar','vvar','wvar','na'])
+    print "Data is in"
+    wvar = mydata['wvar']
+    del mydata
+    w = np.empty([tlen,xlen,ylen,zlen])
+    print 'ReArrange'
+    index = 0
+    for t in range(tlen):
+        print t
+        for z in range(zlen):
+            for y in range(ylen):
+                for x in range(xlen):
+                    w[t,x,y,z] = wvar[index]
+                    index+=1
+    
+    del wvar
+    savefile.create_dataset('w',shape=w.shape,data=w)        
+    del w
+    
+    savefile.close()
+    xx = np.linspace(xmin,xmax,xlen)
+    yy = np.linspace(ymin,ymax,ylen)
+    zz = np.linspace(zmin,zmax,zlen)
+    y, x, z = np.meshgrid(yy,xx,zz)
+    t = np.linspace(t0,tf,tlen)
+    print x.shape
+    print t
+    print 'Save'
+    with hp.File('NAM_gridpoints.hdf5','w') as savefile:
+        savefile.create_dataset('t',shape=t.shape,data=t)
+        savefile.create_dataset('x',shape=x.shape,data=x)
+        savefile.create_dataset('y',shape=y.shape,data=y)
+        savefile.create_dataset('z',shape=z.shape,data=z)
+        savefile.close()
+    
+elif data == 'vel' and dimension == 3:
+    mydata = pd.read_csv('myfile.csv', delimiter=',',names=['uvar','vvar','wvar','na'])
+    print "Data is in"
+    uvar = mydata['uvar']
+    vvar = mydata['vvar']
+    wvar = mydata['wvar']
+    del mydata
+    u = np.empty([tlen,xlen,ylen,zlen])
+    v = np.empty([tlen,xlen,ylen,zlen])
+    w = np.empty([tlen,xlen,ylen,zlen])
+    print 'ReArrange'
+    index = 0
+    for t in range(tlen):
+        print t
+        for z in range(zlen):
+            for y in range(ylen):
+                for x in range(xlen):
+                    u[t,x,y,z] = uvar[index]
+                    v[t,x,y,z] = vvar[index]
+                    w[t,x,y,z] = wvar[index]
+                    index+=1
+    
+    del uvar, vvar, wvar
+    with hp.File('NAM_Velocity_t='+str(t0)+'-'+str(tf)+'hrs_Sept2017_300m_15min_Res.hdf5','w') as savefile:
+        savefile.create_dataset('u',shape=u.shape,data=u)
+        savefile.create_dataset('v',shape=v.shape,data=v)
+        savefile.create_dataset('w',shape=w.shape,data=w)
         savefile.close()
     del u, v, w
 
 
-    xx = np.linspace(-38700,38700,xlen)
-    yy = np.linspace(-38400,38400,ylen)
-    zz = np.linspace(1400,5600,zlen)
+    xx = np.linspace(xmin,xmax,xlen)
+    yy = np.linspace(ymin,ymax,ylen)
+    zz = np.linspace(zmin,zmax,zlen)
     y, x, z = np.meshgrid(yy,xx,zz)
-    t = np.linspace(46,62,tlen)
+    t = np.linspace(t0,tf,tlen)
     print x.shape
     print t
     print 'Save'
@@ -60,6 +146,29 @@ if dimension == 3:
         savefile.create_dataset('z',shape=z.shape,data=z)
         savefile.close()
 
+if data == 'pressure' and dimension == 3:
+    
+    mydata = pd.read_csv('myfile.csv', delimiter=',',names=['pvar','na'])
+    print "Data is in"
+    pvar = mydata['uvar']
+    del mydata
+    p = np.empty([tlen,xlen,ylen,zlen])
+    print 'ReArrange'
+    index = 0
+    for t in range(tlen):
+        print t
+        for z in range(zlen):
+            for y in range(ylen):
+                for x in range(xlen):
+                    p[t,x,y,z] = pvar[index]
+                    index+=1
+    
+    del pvar
+    with hp.File('NAM_Pressure_t='+str(t0)+'-'+str(tf)+'hrs_Sept2017_300m_10min_Res.hdf5','w') as savefile:
+        savefile.create_dataset('Pressure',shape=p.shape,data=p)
+        savefile.close()
+    del p
+        
 elif dimension == 2:
     #mydata = np.genfromtxt('NAMvelocityData.csv', delimiter=',')
     mydata = pd.read_csv('850mb_300m_10min.csv', delimiter=',',names=['uvar','vvar','na'])
