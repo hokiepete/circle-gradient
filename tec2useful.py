@@ -150,7 +150,7 @@ if data == 'pressure' and dimension == 3:
     
     mydata = pd.read_csv('myfile.csv', delimiter=',',names=['pvar','na'])
     print "Data is in"
-    pvar = mydata['uvar']
+    pvar = mydata['pvar']
     del mydata
     p = np.empty([tlen,xlen,ylen,zlen])
     print 'ReArrange'
