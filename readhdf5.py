@@ -1,4 +1,4 @@
 import h5py as hp
-with hp.File('NAM_Velocity_t=0-215hrs_Sept2017_300m_15min_Res.hdf5','r') as readfile:
-    u = readfile['/u'][0,:,:,:]
+with hp.File('850mb_NAMvel_10min_3km.hdf5','r') as readfile:
+    u = readfile['/u'][:]
     readfile.close()

@@ -10,23 +10,25 @@ import numpy as np
 import scipy.interpolate as sinp
 import matplotlib.pyplot as plt
 
-dim=3
+dim=2
 
 if dim == 2:
 
     xlen = 43
     ylen = 41
-    
+    tlen = 216
+    gridspacing = 3000
     with hp.File('850mb_NAMvel_1hr_3km.hdf5','r') as loadfile:
         uin = loadfile['u'][:]
         vin = loadfile['v'][:]
         loadfile.close()
     
-    
+    xin = np.linspace(-(xlen-1)/2*gridspacing,(xlen-1)/2*gridspacing,xlen)
+    yin = np.linspace(-(ylen-1)/2*gridspacing,(ylen-1)/2*gridspacing,ylen)
     tstep =1.0/6.0
-    timein = np.linspace(0,72,73)
-    timewant = np.arange(0,72+tstep,tstep)                    
-    if timewant[-1]>72:
+    timein = np.linspace(0,(tlen-1),tlen)
+    timewant = np.arange(0,(tlen-1)+tstep,tstep)                    
+    if timewant[-1]>(tlen-1):
         timewant = timewant[0:-1]
         
     uwant = np.empty([np.size(timewant),ylen,xlen])
@@ -38,10 +40,15 @@ if dim == 2:
             tckv = sinp.splrep(timein, vin[:,i,j], s=0)
             vwant[:,i,j] = sinp.splev(timewant, tckv, der=0)
             
-    with hp.File('850mb_NAMvel_15min_3km.hdf5','w') as savefile:
+    with hp.File('850mb_NAMvel_10min_3km.hdf5','w') as savefile:
         savefile.create_dataset('u',shape=uwant.shape,data=uwant)
         savefile.create_dataset('v',shape=vwant.shape,data=vwant)
+    
+        savefile.create_dataset('x',shape=xin.shape,data=xin)
+        savefile.create_dataset('y',shape=yin.shape,data=yin)
+        
         savefile.close()
+    
     plt.close('all')  
     plt.plot(timewant,uwant[:,0,0])
     plt.plot(timein,uin[:,0,0])

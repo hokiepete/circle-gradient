@@ -4,16 +4,21 @@ import pandas as pd
 #import matplotlib.pyplot as plt
 #from numpy import genfromtxt
 print "Begin"
-'''
+
 xlen = 259
 ylen = 257
-zlen = 22
-tlen = 97
+tlen = 1291
+xmin =-38850
+xmax = 38850
+ymin =-38400 
+ymax = 38400 
+t0=0
+tf=215
 '''
 xlen = 130
 ylen = 129
 zlen = 22
-tlen = 1291
+
 t0 = 0
 tf = 215
 xmin =-19350
@@ -22,7 +27,8 @@ ymin =-19200
 ymax = 19200 
 zmin = 1400
 zmax = 5600
-dimension = 3
+'''
+dimension = 2
 data = 'vel'
 job = 'big'
 if data == 'vel' and dimension == 3 and job =='big':
@@ -171,12 +177,13 @@ if data == 'pressure' and dimension == 3:
         
 elif dimension == 2:
     #mydata = np.genfromtxt('NAMvelocityData.csv', delimiter=',')
-    mydata = pd.read_csv('850mb_300m_10min.csv', delimiter=',',names=['uvar','vvar','na'])
-    #mydata = pd.read_csv('NAMPressureDatat=46-62hrs_Sept2017.csv', delimiter=',',names=['uvar','na'])
+    #mydata = pd.read_csv('850mb_300m_10min.csv', delimiter=',',names=['uvar','vvar','na'])
+    
+    readfile = pd.read_csv('myfile.csv', delimiter=',',names=['uvar','vvar','na'])
     print "Data is in"
-    uvar = mydata['uvar']
-    vvar = mydata['vvar']
-    del mydata
+    uvar = readfile['uvar']
+    vvar = readfile['vvar']
+    
     u = np.empty([tlen,ylen,xlen])
     v = np.empty([tlen,ylen,xlen])
     print 'ReArrange'
@@ -201,7 +208,7 @@ elif dimension == 2:
     xx = np.linspace(-38700,38700,xlen)
     yy = np.linspace(-38400,38400,ylen)
     x, y = np.meshgrid(xx,yy)
-    t = np.linspace(46,62,tlen)
+    t = np.linspace(t0,tf,tlen)
     print x.shape
     print 'Save'
     with hp.File('850mb_NAM_gridpoints.hdf5','w') as savefile:
