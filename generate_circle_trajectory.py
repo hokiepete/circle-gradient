@@ -2,24 +2,30 @@ import h5py as hp
 import numpy as np
 import scipy.interpolate as sinp
 
-with hp.File('850mb_300m_10min.hdf5') as loadfile:
- u = loadfile['u'][:]
- v = loadfile['v'][:]
- loadfile.close()
+with hp.File('850mb_300m_10min_velocity.hdf5','r') as loadfile:
+    u = loadfile['u'][:]
+    v = loadfile['v'][:]
+    loadfile.close()
 
-with hp.File('850mb_NAM_gridpoints.hdf5') as loadfile:
- x = loadfile['x'][0,:]
- y = loadfile['y'][:,0]
- t = loadfile['t'][:]
- loadfile.close()
-numpts = 16*2*3600+1
-twant = np.linspace(46,62,numpts)
-theta = np.linspace(0,-np.pi*16*10,numpts)
+with hp.File('850mb_NAM_gridpoints.hdf5','r') as loadfile:
+    x = loadfile['x'][0,:]
+    y = loadfile['y'][:,0]
+    t = loadfile['t'][:]
+    loadfile.close()
+t0=0 #hrs
+tf=215 #hrs
+xps = 2 #number of samples per second
+numpts = xps*(tf-t0)*3600+1
+twant = np.linspace(t0,tf,numpts) #seconds
+circlesphr = 3600/340 #circles per hour
+finalpt = -2*np.pi*(tf-t0)*circlesphr
+theta = np.linspace(0,finalpt,numpts)
 r = 2000
 x0=169.4099
 y0=-1043.9
 xwant = r*np.cos(theta)+x0
 ywant = r*np.sin(theta)+y0
+
 '''
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
