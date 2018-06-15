@@ -13,7 +13,7 @@ with hp.File('850mb_NAM_gridpoints.hdf5','r') as loadfile:
     t = loadfile['t'][:]
     loadfile.close()
 t0=0 #hrs
-tf=215 #hrs
+tf=215.5 #hrs
 xps = 2 #number of samples per second
 numpts = xps*(tf-t0)*3600+1
 twant = np.linspace(t0,tf,numpts) #seconds
