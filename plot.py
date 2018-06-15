@@ -17,7 +17,7 @@ with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') 
     data.close()
     
 with hp.File('simflightdata_2000.mat','r') as data:
-    htrhodot = data['rhodot'][:]
+    ptrhodot = data['rhodot'][:]
     to = data['timeout'][:]
     data.close()
 
@@ -34,31 +34,45 @@ with hp.File('hunterdata.mat','r') as data:
 #plt.plot(t,rhodot_origin,color='b')
 #plt.plot(t,rhodot[:,125,130],color='r')
 
-tcku = sint.splrep(t, rhodot, s=0)
-rhodot= sint.splev(tx, tcku, der=0)
-tcku = sint.splrep(to, htrhodot, s=0)
-htrhodot = sint.splev(tx, tcku, der=0)
+tmin = np.max([t.min(),to.min(),tx.min()])
+tmax = np.min([t.max(),to.max(),tx.max()])
 
+tw = tx[tx>=tmin]
+tw = tw[tw<=tmax]
+#tw = tw[tw<=tmax]
+
+tcku = sint.splrep(t, rhodot, s=0)
+rhodot= sint.splev(tw, tcku, der=0)
+tcku = sint.splrep(to, ptrhodot, s=0)
+ptrhodot = sint.splev(tw, tcku, der=0)
+tcku = sint.splrep(tx, rhodotx, s=0)
+rhodotx = sint.splev(tw, tcku, der=0)
+
+del tcku, tx, to, t, tmin, tmax
+                     
 import pandas as pd
 from pandas.plotting import scatter_matrix
-A = pd.DataFrame(np.transpose([rhodot,htrhodot,rhodotx]),columns=['rho','pet','hun'])
+A = pd.DataFrame(np.transpose([rhodot,ptrhodot,rhodotx]),columns=['rhodot','peters flight','hunters simulation'])
 print A.corr()
 #fig = plt.figure(1)
 #scatter_matrix(A)
 
 
-
 fig = plt.figure(2)
-ax1=plt.plot(tx,rhodotx,color='y',label="Hunter's flight simulation")
-ax4=plt.plot(tx,htrhodot,color='b',label="Peter's virtual flight 10x/hr")
-ax3=plt.plot(tx,rhodot,color='r',label="Rhodot")
+ax4=plt.plot(tw,abs(ptrhodot)*3600,color='y',label="Peter's virtual flight")
+ax1=plt.plot(tw,abs(rhodotx)*3600,color='b',label="Hunter's flight simulation")
+ax3=plt.plot(tw,abs(rhodot)*3600,color='r',label="Rhodot")
 
-#ax4=plt.plot(to,htrhodot,color='b',label="Peter's virtual flight 10x/hr")
+plt.ylabel('hrs^{-1}')
+#ax4=plt.plot(to,ptrhodot,color='b',label="Peter's virtual flight 10x/hr")
 #ax3=plt.plot(t,rhodot,color='r',label="Rhodot")
 
-plt.axhline(0)
+plt.axhline(0,color='k')
 plt.legend()#handles=[ax1,ax2,ax3])
-
+#plt.tight_layout()
+#plt.axis('tight')
+plt.autoscale(enable=True, axis='x', tight=True)
+plt.ylim([0,2])
 '''
 rwant -= rwant.min()
 rwant = rwant/rwant.max()
