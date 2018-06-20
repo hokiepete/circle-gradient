@@ -52,23 +52,25 @@ def circleaverage(rhodot,time,theta):
 plt.close('all')
 
 with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
-    rhodot = data['rhodot'][:]
-    t = data['t'][:]
+    rhodot = data['rhodot'][:].squeeze()
+    t = data['t'][:].squeeze()
     data.close()
     
-with hp.File('simflightdata_2000.mat','r') as data:
-    prhodot = data['rhodot'][:]
-    pt = data['timeout'][:]
+with hp.File('simflightdata_2000.mat','r+') as data:
+    prhodot = data['rhodot'][:].squeeze()
+    #data['timeout'][:] = 3600*data['timeout'][:]
+    pt = data['timeout'][:].squeeze()
+    ptheta = data['thetaout'][:].squeeze()
     data.close()
 
 with hp.File('hunterdata.mat','r') as data:
     hrhodot = data['rhodot'][:].squeeze()
     ht = data['timeout'][:].squeeze()
     htheta = data['thetaout'][:].squeeze()
-
+    data.close()
 
 hrhodot, ht = circleaverage(hrhodot,ht,htheta)
-#prhodot, pt = circleaverage(prhodot,pt,ptheta)    
+prhodot, pt = circleaverage(prhodot,pt,ptheta)    
     
     
 
@@ -80,7 +82,7 @@ hrhodot, ht = circleaverage(hrhodot,ht,htheta)
 #    data.close()
 #plt.plot(t,rhodot_origin,color='b')
 #plt.plot(t,rhodot[:,125,130],color='r')
-'''
+
 tmin = np.max([t.min(),pt.min(),ht.min()])
 tmax = np.min([t.max(),pt.max(),ht.max()])
 
@@ -103,18 +105,17 @@ print A.corr()
 #fig = plt.figure(1)
 #scatter_matrix(A)
 
-
-fig = plt.figure(2)
-ax4=plt.plot(tw,prhodot*3600,color='y',label="Peter's virtual flight")
-ax1=plt.plot(tw,hrhodot*3600,color='b',label="Hunter's flight simulation")
-ax3=plt.plot(tw,rhodot*3600,color='r',label="Rhodot")
-
+'''
+fig = plt.figure()
+ax4=plt.plot(tw,abs(prhodot)*3600,color='y',label="Peter's virtual flight")
+ax1=plt.plot(tw,abs(hrhodot)*3600,color='b',label="Hunter's flight simulation")
+ax3=plt.plot(tw,abs(rhodot)*3600,color='r',label="Rhodot")
 '''
 
-fig = plt.figure(2)
-ax4=plt.plot(pt,prhodot*3600,color='y',label="Peter's virtual flight")
-ax1=plt.plot(ht,hrhodot*3600,color='b',label="Hunter's flight simulation")
-ax3=plt.plot(t,rhodot*3600,color='r',label="Rhodot")
+fig = plt.figure()
+ax4=plt.plot(tw,prhodot*3600,color='y',label="Idealized Flight Path, 2km Radius")
+ax1=plt.plot(tw,hrhodot*3600,color='b',label="Simulated Flight Path, 2km Radius")
+ax3=plt.plot(tw,rhodot*3600,color='r',label="True Rhodot")
 plt.ylabel('hrs^{-1}')
 #ax4=plt.plot(pt,prhodot,color='b',label="Peter's virtual flight 10x/hr")
 #ax3=plt.plot(t,rhodot,color='r',label="Rhodot")
@@ -124,7 +125,9 @@ plt.legend()#handles=[ax1,ax2,ax3])
 #plt.tight_layout()
 #plt.axis('tight')
 plt.autoscale(enable=True, axis='x', tight=True)
-plt.ylim([-2,2])
+#plt.ylim([-2,2])
+plt.ylim([-1.3,1.3])
+plt.show()
 '''
 rwant -= rwant.min()
 rwant = rwant/rwant.max()
