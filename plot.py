@@ -62,6 +62,12 @@ with hp.File('simflightdata_2000.mat','r') as data:
     ptheta = data['thetaout'][:].squeeze()
     data.close()
 
+with hp.File('hunterdata_r=01km.mat','r') as data:
+    h1rhodot = data['rhodot'][:].squeeze()
+    h1t = data['timeout'][:].squeeze()
+    h1theta = data['thetaout'][:].squeeze()
+    data.close()
+    
 with hp.File('hunterdata_r=02km.mat','r') as data:
     h2rhodot = data['rhodot'][:].squeeze()
     h2t = data['timeout'][:].squeeze()
@@ -86,6 +92,7 @@ with hp.File('hunterdata_r=15km.mat','r') as data:
     h15theta = data['thetaout'][:].squeeze()
     data.close()
 
+h1rhodot, h1t = circleaverage(h1rhodot,h1t,h1theta)    
 h2rhodot, h2t = circleaverage(h2rhodot,h2t,h2theta)
 h5rhodot, h5t = circleaverage(h5rhodot,h5t,h5theta)
 h10rhodot, h10t = circleaverage(h10rhodot,h10t,h10theta)
@@ -103,13 +110,15 @@ prhodot, pt = circleaverage(prhodot,pt,ptheta)
 #plt.plot(t,rhodot_origin,color='b')
 #plt.plot(t,rhodot[:,125,130],color='r')
 
-tmin = np.max([t.min(),pt.min(),h2t.min(),h5t.min(),h10t.min(),h15t.min()])
-tmax = np.min([t.max(),pt.max(),h2t.max(),h5t.max(),h10t.max(),h15t.max()])
+tmin = np.max([t.min(),pt.min(),h1t.min(),h2t.min(),h5t.min(),h10t.min(),h15t.min()])
+tmax = np.min([t.max(),pt.max(),h1t.max(),h2t.max(),h5t.max(),h10t.max(),h15t.max()])
 
 tw = h2t[h2t>=tmin]
 tw = tw[tw<=tmax]
 #tw = tw[tw<=tmax]
 
+tcku = sint.splrep(h1t, h1rhodot, s=0)
+h1rhodot = sint.splev(tw, tcku, der=0)
 tcku = sint.splrep(t, rhodot, s=0)
 rhodot= sint.splev(tw, tcku, der=0)
 tcku = sint.splrep(pt, prhodot, s=0)
@@ -127,9 +136,9 @@ h15rhodot = sint.splev(tw, tcku, der=0)
 del tcku, h2t, h5t, h10t, h15t, pt, t, tmin, tmax
                      
 import pandas as pd
-A = pd.DataFrame(np.transpose([rhodot,prhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot]),columns=['rhodot','2km path','2km simulation','5km simulation','10km simulation','15km simulation'])
-print A.corr()
-print A.describe()
+A = pd.DataFrame(np.transpose([rhodot,prhodot,h1rhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot]),columns=['rhodot','2km path','1km simulation','2km simulation','5km simulation','10km simulation','15km simulation'])
+A.corr().to_csv('Mycsv.csv',mode='w')
+A.describe().to_csv('Mycsv.csv',mode='a')
 #fig = plt.figure(1)
 #scatter_matrix(A)
 '''
@@ -144,6 +153,7 @@ ax3=plt.plot(t,rhodot*3600,color='r',label="Rhodot")
 
 fig = plt.figure()
 ax4=plt.plot(tw,prhodot*3600,color='y',label="Idealized Flight Path, 2km Radius")
+ax1=plt.plot(tw,h1rhodot*3600,color='k',label="Simulated Flight Path, 1km Radius")
 ax2=plt.plot(tw,h2rhodot*3600,color='b',label="Simulated Flight Path, 2km Radius")
 ax5=plt.plot(tw,h5rhodot*3600,color='g',label="Simulated Flight Path, 5km Radius")
 ax10=plt.plot(tw,h10rhodot*3600,color='m',label="Simulated Flight Path, 10km Radius")
@@ -152,13 +162,13 @@ ax3=plt.plot(tw,rhodot*3600,color='r',label="True Rhodot")
 plt.ylabel('hrs^{-1}')
 #ax4=plt.plot(pt,prhodot,color='b',label="Peter's virtual flight 10x/hr")
 #ax3=plt.plot(t,rhodot,color='r',label="Rhodot")
-plt.axhline(0,color='k')
+#plt.axhline(0,color='k')
 plt.legend()#handles=[ax1,ax2,ax3])
 #plt.tight_layout()
 #plt.axis('tight')
 plt.autoscale(enable=True, axis='x', tight=True)
 #plt.ylim([-2,2])
-#plt.ylim([-1.3,1.3])
+plt.ylim([-1.3,1.3])
 plt.show()
 '''
 rwant -= rwant.min()
