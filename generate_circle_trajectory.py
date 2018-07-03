@@ -13,14 +13,15 @@ with hp.File('850mb_NAM_gridpoints.hdf5','r') as loadfile:
     t = loadfile['t'][:]
     loadfile.close()
 t0=0 #hrs
-tf=215.5 #hrs
+tf=215.0 #hrs
 xps = 2 #number of samples per second
+r = 15000
 numpts = xps*(tf-t0)*3600+1
 twant = np.linspace(t0,tf,numpts) #seconds
-circlesphr = 3600/340 #circles per hour
+speed = 200*np.pi/17.0#37.0 #m/s
+circlesphr = 3600/(2*np.pi*r/speed) #circles per hour
 finalpt = -2*np.pi*(tf-t0)*circlesphr
 theta = np.linspace(0,finalpt,numpts)
-r = 2000
 x0=169.4099
 y0=-1043.9
 xwant = r*np.cos(theta)+x0
