@@ -4,7 +4,7 @@
 import numpy as np
 import h5py as hp
 
-data = hp.File('850mb_300m_10min.hdf5')
+data = hp.File('850mb_300m_10min.hdf5','r')
 u = data['u'][:]
 v = data['v'][:]
 del data
@@ -13,6 +13,7 @@ ds = 300
 dim = u.shape
 print dim
 rhodot = np.empty(dim)
+s1 = np.empty(dim)
 for t in range(dim[0]):
     print t
     dudy,dudx = np.gradient(u[t,:,:],ds,edge_order=2)
@@ -23,8 +24,10 @@ for t in range(dim[0]):
             Utemp = np.array([u[t, i, j], v[t, i, j]])
             Grad = np.array([[dudx[i, j], dudy[i, j]], [dvdx[i, j], dvdy[i, j]]])
             S = 0.5*(Grad + np.transpose(Grad))
+            s1[t,i,j] = np.linalg.eig(S)[0].min()
             rhodot[t, i, j] = np.dot(Utemp, np.dot(np.dot(np.transpose(J), np.dot(S, J)), Utemp))/np.dot(Utemp, Utemp)
 with hp.File('850mb_300m_10min_NAM_Rhodot_t=46-62hrs_Sept2017.hdf5','w') as savefile:
+        savefile.create_dataset('s1',shape=s1.shape,data=s1)
         savefile.create_dataset('rhodot',shape=rhodot.shape,data=rhodot)
         savefile.close()
 
