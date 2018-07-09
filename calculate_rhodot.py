@@ -26,7 +26,7 @@ for t in range(dim[0]):
             S = 0.5*(Grad + np.transpose(Grad))
             s1[t,i,j] = np.linalg.eig(S)[0].min()
             rhodot[t, i, j] = np.dot(Utemp, np.dot(np.dot(np.transpose(J), np.dot(S, J)), Utemp))/np.dot(Utemp, Utemp)
-with hp.File('850mb_300m_10min_NAM_Rhodot_t=46-62hrs_Sept2017.hdf5','w') as savefile:
+with hp.File('850mb_300m_10min_NAM_Rhodot_t=0-215hrs_Sept2017.hdf5','w') as savefile:
         savefile.create_dataset('s1',shape=s1.shape,data=s1)
         savefile.create_dataset('rhodot',shape=rhodot.shape,data=rhodot)
         savefile.close()

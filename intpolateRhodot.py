@@ -12,7 +12,9 @@ import scipy.interpolate as sint
 import matplotlib.pyplot as plt
 
 with hp.File('850mb_300m_10min_NAM_Rhodot_t=0-215hrs_Sept2017.hdf5','r') as data:
+    print data.keys()
     rhodot = data['rhodot'][:]
+    s1 = data['s1'][:]
 del data
 with hp.File('850mb_NAM_gridpoints.hdf5','r') as data:
     x = data['x'][:]
@@ -24,9 +26,11 @@ x0=169.4099
 y0=-1043.9
 points = zip(x.ravel(),y.ravel())
 rhodot_origin = np.empty(t.shape)
+s1_origin = np.empty(t.shape)
 for tt in range(len(t)):
     print tt
     rhodot_origin[tt] = sint.griddata(points,rhodot[tt,:,:].ravel(),(x0,y0),method='cubic')
+    s1_origin[tt] = sint.griddata(points,s1[tt,:,:].ravel(),(x0,y0),method='cubic')
     #f = sint.interp2d(x, y, rhodot[tt,:,:], kind='cubic')
     #rhodot_origin[tt] = f(x0,y0)
     #tck = sint.bisplrep(x, y, rhodot[tt,:,:], s=0)
@@ -34,6 +38,7 @@ for tt in range(len(t)):
 with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','w') as savefile:
         savefile.create_dataset('t',shape=t.shape,data=t)
         savefile.create_dataset('rhodot',shape=rhodot_origin.shape,data=rhodot_origin)
+        savefile.create_dataset('s1',shape=s1_origin.shape,data=s1_origin)
         savefile.close()
 plt.plot(t,rhodot_origin)
         #np.savez('850mb_NAM_Rhodot_Origin_t=46-62hrs_Sept2017.npz',t,rhodot_origin)
