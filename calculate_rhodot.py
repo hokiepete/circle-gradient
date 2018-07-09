@@ -4,7 +4,7 @@
 import numpy as np
 import h5py as hp
 
-data = hp.File('850mb_300m_10min.hdf5','r')
+data = hp.File('850mb_300m_10min_velocity.hdf5','r')
 u = data['u'][:]
 v = data['v'][:]
 del data
