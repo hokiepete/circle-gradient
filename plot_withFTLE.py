@@ -7,7 +7,7 @@ Created on Wed Jun 13 15:59:44 2018
 import h5py as hp
 import numpy as np
 import scipy.interpolate as sint
-import matplotlib.pyplot as plt
+
 import matplotlib
 import matplotlib.font_manager as font_manager
 import seaborn as sns
@@ -16,14 +16,22 @@ sns.set_style('ticks')
 titlefont = {'fontsize':12,'family':'serif','fontname':'Computer Modern'}
 labelfont = {'fontsize':10,'family':'serif','fontname':'Computer Modern'}
 tickfont = {'fontsize':8,'family':'serif','fontname':'Computer Modern'}
+
+
+#matplotlib.rcParams['font.family'] = 'serif'
 matplotlib.rcParams['font.serif']='Computer Modern'
+#titlefont = {'fontsize':12}
+#labelfont = {'fontsize':10}
+#tickfont = {'fontsize':8}
 font = font_manager.FontProperties(family='serif',style='normal', size=8)
+import matplotlib.pyplot as plt
+#font
 #weight='bold'
 phi = 1.0/1.61803398875
 #figheight = 4.5
 figwidth = 6
 FigSize=(figwidth, figwidth*phi)
-"""
+
 def circleaverage(rhodot,time,theta):
     theta=np.mod(theta-theta[0],-2*np.pi)
     #%theta=mod(theta1,-2*pi);
@@ -217,7 +225,7 @@ p15s1 = sint.splev(tw, tcku, der=0)
 
 
 del tcku, h2t, h5t, h10t, h15t, p2t, p5t, p10t, p15t, t, tmin, tmax
-                     
+'''
 import pandas as pd
 Alldata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4,rhodot,p2rhodot,p5rhodot,p10rhodot,p15rhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot,s1,p2s1,p5s1,p10s1,p15s1,h2s1,h5s1,h10s1,h15s1]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4','rhodot','rd 2km path','rhodot 5km path','rhodot 10km path','rhodot 15km path','rhodot 2km simulation','rhodot 5km simulation','rhodot 10km simulation','rhodot 15km simulation','s1','s1 2km path','s1 5km path','s1 10km path','s1 15km path','s1 2km simulation','s1 5km simulation','s1 10km simulation','s1 15km simulation'])
 Alldata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='w')
@@ -234,19 +242,8 @@ s1data.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4'])
 ftledata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
-"""
 
-#fig = plt.figure(1)
-#scatter_matrix(A)
-'''
-fig = plt.figure()
-#ax4=plt.plot(tw,abs(prhodot),color='y',label="Peter's virtual flight")
-ax2=plt.plot(h2t,h2rhodot,color='b',label="Hunter's flight simulation 02km")
-ax5=plt.plot(h5t,h5rhodot,color='g',label="Hunter's flight simulation 05km")
-ax10=plt.plot(h10t,h10rhodot,color='m',label="Hunter's flight simulation 10km")
-ax15=plt.plot(h15t,h15rhodot,color='c',label="Hunter's flight simulation 15km")
-ax3=plt.plot(t,rhodot,color='k',label="Rhodot")
-'''
+
 plt.close('all')
 fig = plt.figure(1,figsize=FigSize)
 ax=plt.plot(tw,rhodot,color='k',label="True Rhodot")
@@ -257,13 +254,13 @@ ax15=plt.plot(tw,h15rhodot,color='c',label="Simulated Flight Path, 15km Radius")
 #plt.axhline(mean,color='k')
 #plt.axhline(mean+std,color='k')
 #plt.axhline(mean-std,color='k')
-plt.ylabel('hrs^{-1}',**labelfont)
+plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.legend(prop = font)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-1.5,1.5])
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
-plt.savefig('rhodot_idealized.eps', transparent=True, bbox_inches='tight')
+plt.savefig('rhodot_idealized.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
 fig = plt.figure(2,figsize=FigSize)
 ax=plt.plot(tw,rhodot,color='k',label="True Rhodot")
@@ -274,13 +271,13 @@ ax2=plt.plot(tw,p15rhodot,color='c',label="Idealized Flight Path, 15km Radius")
 #plt.axhline(mean,color='k')
 #plt.axhline(mean+std,color='k')
 #plt.axhline(mean-std,color='k')
-plt.ylabel('hrs^{-1}',**labelfont)
+plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.legend(prop = font)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-1.5,1.5])
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
-plt.savefig('rhodot_simulated.eps', transparent=True, bbox_inches='tight')
+plt.savefig('rhodot_simulated.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
 fig = plt.figure(3,figsize=FigSize)
 #fig = plt.figure(3,figsize=FigSize)
@@ -301,7 +298,7 @@ sub2 = plt.subplot(222)
 #ax3=plt.plot(tw,rhodot,color='k',label="True Rhodot")
 ax2=plt.plot(tw,p5rhodot,color='b',label="Idealized, 5km")
 ax1=plt.plot(tw,h5rhodot,color='r',label="Simulated, 5km")
-#plt.ylabel('hrs^{-1}',**labelfont)
+#plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.tick_params(labelbottom='off')
 plt.tick_params(labelleft='off')
 plt.legend(prop = font)
@@ -327,14 +324,14 @@ sub4 = plt.subplot(224)
 ax2=plt.plot(tw,p15rhodot,color='b',label="Idealized, 15km")
 ax1=plt.plot(tw,h15rhodot,color='r',label="Simulated, 15km")
 #plt.xlabel('hrs',**labelfont)
-#plt.ylabel('hrs^{-1}',**labelfont)
+#plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.tick_params(labelleft='off')
 plt.legend(prop = font)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
 plt.ylim([-1.3,1.3])
-plt.savefig('rhodot_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight')
+plt.savefig('rhodot_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
 fig = plt.figure(4,figsize=FigSize)
 ax=plt.plot(tw,s1,color='k',label="True s1")
@@ -345,13 +342,13 @@ ax15=plt.plot(tw,h15s1,color='c',label="Simulated Flight Path, 15km Radius")
 #plt.axhline(mean,color='k')
 #plt.axhline(mean+std,color='k')
 #plt.axhline(mean-std,color='k')
-plt.ylabel('hrs^{-1}',**labelfont)
+plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.legend(prop = font,loc=3)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-2.5,0.5])
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
-plt.savefig('s1_idealized.eps', transparent=True, bbox_inches='tight')
+plt.savefig('s1_idealized.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
 fig = plt.figure(5,figsize=FigSize)
 ax=plt.plot(tw,s1,color='k',label="True s1")
@@ -362,13 +359,13 @@ ax2=plt.plot(tw,p15s1,color='c',label="Idealized Flight Path, 15km Radius")
 #plt.axhline(mean,color='k')
 #plt.axhline(mean+std,color='k')
 #plt.axhline(mean-std,color='k')
-plt.ylabel('hrs^{-1}',**labelfont)
+plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.legend(prop = font,loc=3)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-2.5,0.5])
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
-plt.savefig('s1_simulated.eps', transparent=True, bbox_inches='tight')
+plt.savefig('s1_simulated.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
 fig = plt.figure(6,figsize=FigSize)
 #fig = plt.figure(3,figsize=FigSize)
@@ -389,7 +386,7 @@ sub2 = plt.subplot(222)
 #ax3=plt.plot(tw,rhodot,color='k',label="True Rhodot")
 ax2=plt.plot(tw,p5s1,color='b',label="Idealized, 5km")
 ax1=plt.plot(tw,h5s1,color='r',label="Simulated, 5km")
-#plt.ylabel('hrs^{-1}',**labelfont)
+#plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.tick_params(labelbottom='off')
 plt.tick_params(labelleft='off')
 plt.legend(prop = font,loc=4)
@@ -415,20 +412,18 @@ sub4 = plt.subplot(224)
 ax2=plt.plot(tw,p15s1,color='b',label="Idealized, 15km")
 ax1=plt.plot(tw,h15s1,color='r',label="Simulated, 15km")
 #plt.xlabel('hrs',**labelfont)
-#plt.ylabel('hrs^{-1}',**labelfont)
+#plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.tick_params(labelleft='off')
 plt.legend(prop = font,loc=4)
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
 plt.ylim([-2.1,0.5])
-plt.savefig('s1_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight')
-
+plt.savefig('s1_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
 fig = plt.figure(7,figsize=FigSize)
 plt.axhline(0,color='k')
-ax1=plt.plot(tw,rhodot,color='purple',label="Rhodot")
-ax2=plt.plot(tw,s1,color='r',label="S1 Rhodot")
+ax2=plt.plot(tw,s1,color='r',label="S1")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
 axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
 plt.autoscale(enable=True, axis='x', tight=True)
@@ -436,10 +431,46 @@ plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
 plt.ylim([-2.1,1.25])
-plt.savefig('rhodot_vs_s1_FTLE.eps', transparent=True, bbox_inches='tight')
+plt.savefig('s1_FTLE.eps', transparent=True, bbox_inches='tight', pad_inches=0)
+
+fig = plt.figure(8,figsize=FigSize)
+plt.axhline(0,color='k')
+ax2=plt.plot(tw,s1,color='r',label="S1")
+axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+plt.autoscale(enable=True, axis='x', tight=True)
+plt.legend(prop = font,loc=4)
+plt.yticks(**tickfont)
+plt.xticks(**tickfont)
+plt.ylim([-2.1,1.25])
+plt.xlim([tw.min(),70])
+plt.savefig('s1_FTLE_closeup.eps', transparent=True, bbox_inches='tight', pad_inches=0)
+
+fig = plt.figure(9,figsize=FigSize)
+plt.axhline(0,color='k')
+ax1=plt.plot(tw,rhodot,color='purple',label="Rhodot")
+axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+plt.autoscale(enable=True, axis='x', tight=True)
+plt.legend(prop = font,loc=4)
+plt.yticks(**tickfont)
+plt.xticks(**tickfont)
+plt.ylim([-2.1,1.25])
+plt.savefig('rhodot_vs_FTLE.eps', transparent=True, bbox_inches='tight', pad_inches=0)
+'''
+fig = plt.figure(10,figsize=FigSize)
+plt.axhline(0,color='k')
+ax1=plt.plot(tw,rhodot,color='purple',label="Rhodot")
+axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+plt.autoscale(enable=True, axis='x', tight=True)
+plt.legend(prop = font,loc=4)
+plt.yticks(**tickfont)
+plt.xticks(**tickfont)
+plt.ylim([-2.1,1.25])
+plt.xlim([tw.min(),70])
+plt.savefig('rhodot_vs_FTLE_closeup.eps', transparent=True, bbox_inches='tight', pad_inches=0)
+
 plt.show()
-
-
-
 
 
