@@ -9,6 +9,7 @@ import numpy as np
 import scipy.interpolate as sint
 
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.font_manager as font_manager
 import seaborn as sns
 sns.set_style('ticks')
@@ -24,6 +25,7 @@ matplotlib.rcParams['font.serif']='Computer Modern'
 #labelfont = {'fontsize':10}
 #tickfont = {'fontsize':8}
 font = font_manager.FontProperties(family='serif',style='normal', size=8)
+
 import matplotlib.pyplot as plt
 #font
 #weight='bold'
@@ -471,6 +473,6 @@ plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('rhodot_vs_FTLE_closeup.eps', transparent=True, bbox_inches='tight', pad_inches=0)
 
-plt.show()
+#plt.show()
 
 
