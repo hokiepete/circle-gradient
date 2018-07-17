@@ -4,8 +4,8 @@ Created on Tue Jul 17 12:28:31 2018
 
 @author: pnolan86
 """
-import matplotlib.pyplot as plt
 import matplotlib
+matplotlib.use('Agg')
 import seaborn as sns
 import h5py as hp
 import numpy as np
@@ -13,6 +13,7 @@ import scipy.interpolate as sint
 sns.set_style('ticks')
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['text.usetex']=True
+import matplotlib.pyplot as plt
 plt.rc('font', family='serif')
 
 
@@ -233,7 +234,7 @@ plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-1.5,1.5])
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
-plt.savefig('rhodot_idealized.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+plt.savefig('rhodot_idealized.tif', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(2,figsize=FigSize)
 ax=plt.plot(tw,rhodot,color='k',label="True Rhodot")
@@ -250,7 +251,7 @@ plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-1.5,1.5])
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
-plt.savefig('rhodot_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('rhodot_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(3,figsize=FigSize)
 #fig = plt.figure(3,figsize=FigSize)
@@ -305,7 +306,7 @@ plt.autoscale(enable=True, axis='x', tight=True)
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
 plt.ylim([-1.3,1.3])
-plt.savefig('rhodot_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('rhodot_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(4,figsize=FigSize)
 ax=plt.plot(tw,s1,color='k',label="True s1")
@@ -322,7 +323,7 @@ plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-2.5,0.5])
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
-plt.savefig('s1_idealized.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_idealized.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(5,figsize=FigSize)
 ax=plt.plot(tw,s1,color='k',label="True s1")
@@ -339,7 +340,7 @@ plt.autoscale(enable=True, axis='x', tight=True)
 plt.ylim([-2.5,0.5])
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
-plt.savefig('s1_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(6,figsize=FigSize)
 #fig = plt.figure(3,figsize=FigSize)
@@ -394,7 +395,7 @@ plt.autoscale(enable=True, axis='x', tight=True)
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
 plt.ylim([-2.1,0.5])
-plt.savefig('s1_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_idealized_vs_simulated.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 
 fig = plt.figure(7,figsize=FigSize)
@@ -407,7 +408,7 @@ plt.legend(loc=4)
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
 plt.ylim([-2.1,1.25])
-plt.savefig('rhodot_vs_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('rhodot_vs_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(8,figsize=FigSize)
 plt.axhline(0,color='k')
@@ -420,7 +421,7 @@ plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
 plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
-plt.savefig('rhodot_vs_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('rhodot_vs_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(9,figsize=FigSize)
 plt.axhline(0,color='k')
@@ -432,7 +433,7 @@ plt.legend(loc=4)
 plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
 plt.ylim([-2.1,1.25])
-plt.savefig('s1_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 #'''
 fig = plt.figure(10,figsize=FigSize)
 plt.axhline(0,color='k')
@@ -445,7 +446,7 @@ plt.yticks(fontsize=8)
 plt.xticks(fontsize=8)
 plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
-plt.savefig('s1_FTLE_closeup.png', transparent=True, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_FTLE_closeup.png', transparent=True, bbox_inches='tight',pad_inches=0)
 
 
 
