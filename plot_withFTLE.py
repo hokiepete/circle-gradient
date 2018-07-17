@@ -23,7 +23,9 @@ phi = 1.0/1.61803398875
 #figheight = 4.5
 figwidth = 6
 FigSize=(figwidth, figwidth*phi)
-"""
+def get_axis_limits(ax, scale=.9):
+    return ax.get_xlim()[1]*scale, ax.get_ylim()[1]*scale
+
 def circleaverage(rhodot,time,theta):
     theta=np.mod(theta-theta[0],-2*np.pi)
     #%theta=mod(theta1,-2*pi);
@@ -60,8 +62,6 @@ def circleaverage(rhodot,time,theta):
     meanrho=meanrho[0:-1]
     meantime=meantime[0:-1]
     return np.array(meanrho), np.array(meantime)
-
-
 
 with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-1.hdf5','r') as data:
     ftle1 = 3600*data['ftle'][:].squeeze()
@@ -234,7 +234,7 @@ s1data.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4'])
 ftledata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
-"""
+#"""
 
 #fig = plt.figure(1)
 #scatter_matrix(A)
@@ -290,6 +290,7 @@ ax2=plt.plot(tw,p2rhodot,color='b',label="Idealized, 2km")
 ax1=plt.plot(tw,h2rhodot,color='r',label="Simulated, 2km")
 plt.tick_params(labelbottom='off')
 #ax2.tick_params(labelbottom='off')
+
 plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.legend(prop = font)
 plt.autoscale(enable=True, axis='x', tight=True)
@@ -414,6 +415,7 @@ sub4 = plt.subplot(224)
 #ax3=plt.plot(tw,rhodot,color='k',label="True Rhodot")
 ax2=plt.plot(tw,p15s1,color='b',label="Idealized, 15km")
 ax1=plt.plot(tw,h15s1,color='r',label="Simulated, 15km")
+sub4.annotate('A', xy=get_axis_limits(sub4,0.85))
 #plt.xlabel('hrs',**labelfont)
 #plt.ylabel('hrs^{-1}',**labelfont)
 plt.tick_params(labelleft='off')
