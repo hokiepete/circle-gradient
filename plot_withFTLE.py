@@ -12,13 +12,13 @@ import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
-matplotlib.rcParams['text.usetex']=True
-plt.rc('font', family='serif')
-
+#
+#plt.rc('font', family='serif')
+plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})#: ['Computer Modern']})
 #plt.rcParams['font.family']='serif'
 #plt.rcParams['mathtext.fontset'] = 'dejavuserif'
 #plt.rcParams['font.serif']='Computer Modern'
-
+matplotlib.rcParams['text.usetex']=True
 import matplotlib.font_manager as font_manager
 
 import seaborn as sns
@@ -33,6 +33,7 @@ font = font_manager.FontProperties(family='serif',style='normal', size=8)
 titlefont = {'fontsize':12}
 labelfont = {'fontsize':10}
 tickfont = {'fontsize':8}
+
 font = font_manager.FontProperties(style='normal', size=8)
 #'''
 plt.close('all')
@@ -237,7 +238,7 @@ p15s1 = sint.splev(tw, tcku, der=0)
 del tcku, h2t, h5t, h10t, h15t, p2t, p5t, p10t, p15t, t, tmin, tmax
 #'''
 
-#'''               
+'''               
 import pandas as pd
 Alldata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4,rhodot,p2rhodot,p5rhodot,p10rhodot,p15rhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot,s1,p2s1,p5s1,p10s1,p15s1,h2s1,h5s1,h10s1,h15s1]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4','rhodot','rd 2km path','rhodot 5km path','rhodot 10km path','rhodot 15km path','rhodot 2km simulation','rhodot 5km simulation','rhodot 10km simulation','rhodot 15km simulation','s1','s1 2km path','s1 5km path','s1 10km path','s1 15km path','s1 2km simulation','s1 5km simulation','s1 10km simulation','s1 15km simulation'])
 Alldata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='w')
@@ -254,8 +255,9 @@ s1data.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4'])
 ftledata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
-
+#'''
 plt.close('all')
+'''
 fig = plt.figure(1,figsize=FigSize)
 ax=plt.plot(tw,rhodot,color='k',label="True Rhodot")
 ax2=plt.plot(tw,h2rhodot,color='b',label="Simulated Flight Path, 2km Radius")
@@ -474,13 +476,14 @@ plt.savefig('s1_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 #'''
 fig = plt.figure(10,figsize=FigSize)
 plt.axhline(0,color='k')
-ax2=plt.plot(tw,s1,color='r',label="S1")
+ax2=plt.plot(tw,s1,color='r',label="$S_{1}+rho$")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
 axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
+plt.ylabel('inverse hrs')
 plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('s1_FTLE_closeup.png', transparent=True, bbox_inches='tight',pad_inches=0)
