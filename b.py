@@ -13,15 +13,14 @@ font_manager.findfont('cmr10', rebuild_if_missing=True)
 import matplotlib.pyplot as plt
 import matplotlib
 #from matplotlib import font_manager
-#import seaborn as sns
-#sns.set_style('ticks')
-#matplotlib.rcParams['mathtext.fontset'] = 'cm'
-#matplotlib.rcParams['text.usetex']=True
+import seaborn as sns
+sns.set_style('ticks')
+matplotlib.rcParams['text.usetex']=True
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
 plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})#['Computer Modern']})
-#plt.rc('font',family='serif')
 plt.plot([0,1],[0,1],color='k',label='cow')
 plt.ylabel("Banana")
-#plt.xlabel("$\dot{\rho}$")
+plt.xlabel("$\dot{\rho}$")
 plt.legend()
 plt.show()
 
