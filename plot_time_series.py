@@ -10,9 +10,9 @@ import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 plt.close('all')
-matplotlib.rcParams['text.usetex']=True
-matplotlib.rcParams['mathtext.fontset'] = 'cm'
-plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
+#matplotlib.rcParams['text.usetex']=True
+#matplotlib.rcParams['mathtext.fontset'] = 'cm'
+#plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
 import matplotlib.font_manager as font_manager
 
 # Define font styles as dictionaries
@@ -329,6 +329,8 @@ plt.yticks(**tickfont)
 plt.xticks(**tickfont)
 plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
+plt.axvline(164.5,color='m')
+
 plt.savefig('s1_rhodot_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
 fig = plt.figure(12,figsize=FigSize)
