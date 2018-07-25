@@ -330,12 +330,12 @@ plt.xticks(**tickfont)
 plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.axvline(164.5,color='m')
-
+import numpy as np
 plt.savefig('s1_rhodot_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
-
+li = np.percentile(ftle4,95,axis=None)
 fig = plt.figure(12,figsize=FigSize)
 plt.axhline(0,color='k')
-plt.axhline(-0.3000400059223705,color='g')
+plt.axhline(-li,color='g')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
 ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
 #axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")

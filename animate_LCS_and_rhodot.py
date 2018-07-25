@@ -10,7 +10,7 @@ Created on Sun Jul 22 17:59:06 2018
 #Projection Lambert
 import matplotlib
 #matplotlib.use('Agg')
-#matplotlib.rcParams['text.usetex']=True
+matplotlib.rcParams['text.usetex']=True
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 
 import matplotlib.pyplot as plt
@@ -65,7 +65,7 @@ print("Begin Map")
 ''
 m = Basemap(width=77700,height=76800,\
     rsphere=(6378137.00,6356752.3142),\
-    resolution='l',area_thresh=0.,projection='lcc',\
+    resolution='f',area_thresh=0.,projection='lcc',\
     lat_1=35.,lat_0=origin[0],lon_0=origin[1])#,ax=ax)
 
 #m.drawcoastlines(linewidth=2.0)
@@ -79,54 +79,61 @@ with hp.File('850mb_300m_10min_NAM_Rhodot_t=0-215hrs_Sept2017.hdf5','r') as load
     rhodot=3600*loadfile['rhodot'][24:,:,:]
     loadfile.close()
 
-with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017.hdf5','r') as loadfile:
+with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-4.hdf5','r') as loadfile:
     ftle=loadfile['ftle'][:]
     dirdiv=loadfile['directionalderivative'][:]
     concav=loadfile['concavity'][:]
     loadfile.close()
 
-colormin = rhodot.min()
-colormax = rhodot.max()
-print(colormin)
-
+colormin = rhodot.min(axis=None)
+colormax = rhodot.max(axis=None)
 colorlevel = 1/3.0*np.min(np.fabs([colormin,colormax]))
+
+#thresh=np.percentile(ftle,95,axis=None)
+thresh = 0.3000400059223705/3600 #90th percentile for timeseries, see plot_time_series.py
+dirdiv = np.ma.masked_where(concav>0,dirdiv)
+dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv)
+
 #colorlevel = 2
 x = np.linspace(0, m.urcrnrx, dim[2])
 y = np.linspace(0, m.urcrnry, dim[1])
 xx, yy = np.meshgrid(x, y)
-t=985
 '''
 repulsion = m.contourf(xx, yy, rhodot[t,:,:],vmin=-colorlevel,\
         vmax=colorlevel,levels=np.linspace(colormin,colormax,301),cmap='CO')
 '''
-repulsion = m.pcolormesh(xx, yy, rhodot[t,:,:],vmin=-colorlevel,\
+repulsion = m.pcolormesh(xx, yy, rhodot[0,:,:],vmin=-colorlevel,\
         vmax=colorlevel,shading='gouraud',cmap='CO')
 clb = plt.colorbar(repulsion,fraction=0.037, pad=0.02) #shrink=0.5,pad=0.2,aspect=10)
-#clb.ax.set_title('$\dot{\\rho}$',size = 18)
+clb.ax.set_title('$\dot{\\rho}$',size = 18)
 
-thresh=np.percentile(ftle,95,axis=None)
-dirdiv = np.ma.masked_where(concav>0,dirdiv)
-dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv)
 
-ridge = m.contour(xx,yy,dirdiv[t,:,:],levels =[0])#,latlon=True)
-m.scatter(star[1],star[0],marker='*',s=20*20,latlon=True)
+ridge = m.contour(xx,yy,dirdiv[0,:,:],levels =[0])#,latlon=True)
+#m.scatter(star[1],star[0],marker='*',s=20*20,latlon=True)
 
-"""
-print "Begin Loop"
+
+print("Begin Loop")
 for t in range(dim[0]):
-    repulsionquad.set_array(np.ravel(np.transpose(A[t,:,:])))
-    velquiver.set_UVC(u[t,::30,::30],v[t,::30,::30])
+    for c in ridge.collections:
+        #if ind == 0
+         #   print c.get_segments()
+         #   ind += 1
+         c.remove()
+    repulsion.set_array(np.ravel(rhodot[t,:,:]))
+    ridge = m.contour(xx,yy,dirdiv[t,:,:],levels =[0])#,latlon=True)
+    #velquiver.set_UVC(u[t,::30,::30],v[t,::30,::30])
     #qk = plt.quiverkey(velquiver, 0, 0, 12000, r'$2 \frac{m}{s}$', labelpos='E', coordinates='figure')
     #plt.quiverkey(velquiver, 0.9, 0.9, 2, r'$2 \frac{m}{s}$', labelpos='N', coordinates='figure')
-    minute = stepsize * t
+    minute = stepsize * (t + 24)
     h, minute = divmod(minute,60)
     x, y = m(star[1],star[0])
     m.scatter(x,y,marker='*',color='g',s=20*16)
-    plt.annotate('LIDAR',xy=(x-0.05*x,y+0.03*y),size=15)
-    plt.title("Repulsion Rate, 9-{0}-2017 {1:02d}{2:02d} EDT".format(initday+(inittime+h)//24, (inittime+h)%24, minute),fontsize=18)
-    plt.savefig('MV_lcs_{0:04d}.tif'.format(t), transparent=False, bbox_inches='tight')
+    plt.annotate('Kentland Farm',xy=(x-0.1*x,y+0.05*y),size=15)
+    plt.title("Repulsion Rate, 9-{0}-2017 {1:02d}{2:02d} GMT".format(initday+(inittime+h)//24, (inittime+h)%24, minute),fontsize=18)
+    #plt.autoscale(tight=True)
+    plt.savefig('Kentland_lcs_{0:04d}.tif'.format(t), transparent=False, bbox_inches='tight')
 
-
+"""
 npp = nridge.collections[0].get_paths()
 wpp = wridge.collections[0].get_paths()
 nindex = [104,75,31,32,26] #no windage
