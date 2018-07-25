@@ -14,7 +14,7 @@ plt.close('all')
 #matplotlib.rcParams['mathtext.fontset'] = 'cm'
 #plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
 import matplotlib.font_manager as font_manager
-
+import cRidge_passing_times as cr
 # Define font styles as dictionaries
 '''
 titlefont = {'fontsize':12,'family':'serif','fontname':'cmr10'}
@@ -316,23 +316,32 @@ plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('s1_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
+
+import numpy as np
+ridges = cr.percentile_90()
+li = np.percentile(ftle4,10,axis=None)
+
 fig = plt.figure(11,figsize=FigSize)
+[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
 plt.axhline(0,color='k')
-plt.axhline(-0.3000400059223705,color='g')
+plt.axhline(-li,color='g')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
 ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
 #axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
 axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+
+#axr = plt.axvline(ridges)
+#axr = plt.scatter(ridges,np.zeros(ridges.shape))
+
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
 plt.xticks(**tickfont)
 plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
-plt.axvline(164.5,color='m')
-import numpy as np
 plt.savefig('s1_rhodot_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
-li = np.percentile(ftle4,95,axis=None)
+
+
 fig = plt.figure(12,figsize=FigSize)
 plt.axhline(0,color='k')
 plt.axhline(-li,color='g')

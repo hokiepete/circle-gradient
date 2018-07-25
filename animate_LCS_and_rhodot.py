@@ -90,7 +90,8 @@ colormax = rhodot.max(axis=None)
 colorlevel = 1/3.0*np.min(np.fabs([colormin,colormax]))
 
 #thresh=np.percentile(ftle,95,axis=None)
-thresh = 0.3000400059223705/3600 #90th percentile for timeseries, see plot_time_series.py
+#thresh = 0.3000400059223705/3600 #90th percentile for timeseries, see plot_time_series.py
+thresh = 0
 dirdiv = np.ma.masked_where(concav>0,dirdiv)
 dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv)
 
