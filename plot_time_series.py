@@ -318,16 +318,16 @@ plt.savefig('s1_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inc
 
 
 import numpy as np
-ridges = cr.percentile_90()
-li = np.percentile(ftle4,10,axis=None)
+#ridges = cr.percentile_90()
+li = np.percentile(ftle1,90,axis=None)
 
 fig = plt.figure(11,figsize=FigSize)
-[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
+#[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
 plt.axhline(0,color='k')
 plt.axhline(-li,color='g')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
 ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
-#axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
 axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
 
 #axr = plt.axvline(ridges)
@@ -347,8 +347,8 @@ plt.axhline(0,color='k')
 plt.axhline(-li,color='g')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
 ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
-#axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
-axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+axf4=plt.plot(tw,-ftle1,color='c',label="FTLE -4hr")
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
