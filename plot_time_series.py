@@ -82,7 +82,7 @@ ftledata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 #'''
 
-#'''
+'''
 fig = plt.figure(1,figsize=FigSize)
 ax=plt.plot(tw,rhodot,color='k',label="True $\dot{\\rho}$")
 ax2=plt.plot(tw,h2rhodot,color='b',label="Simulated Flight Path, 2km Radius")
@@ -301,7 +301,7 @@ plt.xticks(**tickfont)
 plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.savefig('s1_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
-#'''
+
 fig = plt.figure(10,figsize=FigSize)
 plt.axhline(0,color='k')
 ax2=plt.plot(tw,s1,color='r',label="$s_{1}$")
@@ -315,24 +315,23 @@ plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('s1_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
-
+#'''
 
 import numpy as np
-#ridges = cr.percentile_90()
-li = np.percentile(ftle1,90,axis=None)
-
+ridges = cr.hr_4_percentile_90()
+li4 = np.percentile(ftle4,90,axis=None)
+li1 = np.percentile(ftle1,90,axis=None)
+lis1 = np.percentile(-s1,90,axis=None)
 fig = plt.figure(11,figsize=FigSize)
-#[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
+[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
 plt.axhline(0,color='k')
-plt.axhline(-li,color='g')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
+plt.axhline(-lis1,color='r')
 ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
-axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+#axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
+#plt.axhline(-li1,color='b')
 axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
-
-#axr = plt.axvline(ridges)
-#axr = plt.scatter(ridges,np.zeros(ridges.shape))
-
+plt.axhline(-li4,color='c')
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
@@ -344,7 +343,23 @@ plt.savefig('s1_rhodot_FTLE.eps', transparent=True, bbox_inches='tight',pad_inch
 
 fig = plt.figure(12,figsize=FigSize)
 plt.axhline(0,color='k')
-plt.axhline(-li,color='g')
+ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
+plt.axhline(-lis1,color='r')
+ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
+axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+plt.axhline(-li4,color='c')
+plt.autoscale(enable=True, axis='x', tight=True)
+plt.legend(prop = font,loc=4)
+plt.yticks(**tickfont)
+plt.xticks(**tickfont)
+plt.ylabel('$hrs^{-1}$',**labelfont)
+plt.ylim([-2.1,1.25])
+plt.savefig('s1_rhodot_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+
+'''
+fig = plt.figure(12,figsize=FigSize)
+plt.axhline(0,color='k')
+plt.axhline(-li4,color='g')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
 ax2=plt.plot(tw,h2rhodot,color='purple',label="$\dot{\\rho}$, 2km")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
@@ -357,5 +372,5 @@ plt.ylabel('$hrs^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('s1_rhodot_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
-
+'''
 plt.show()
