@@ -324,7 +324,7 @@ li1 = np.percentile(ftle1,90,axis=None)
 lis1 = -np.percentile(-s1,90,axis=None)
 lird = -np.percentile(-h2rhodot[h2rhodot<=0],90,axis=None)
 fig = plt.figure(11,figsize=FigSize)
-#[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
+[plt.axvline(_x, linewidth=1,alpha=0.3, color='b') for _x in ridges]
 plt.axhline(0,color='k')
 ax1=plt.plot(tw,h2s1,color='r',label="$s_{1}$, 2km")
 plt.axhline(lis1,color='r',linestyle='dashed')
