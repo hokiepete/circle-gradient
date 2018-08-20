@@ -93,6 +93,7 @@ colorlevel = 1/3.0*np.min(np.fabs([colormin,colormax]))
 #thresh = 0.3000400059223705/3600 #90th percentile for the -4hr FTLE timeseries, see plot_time_series.py
 thresh = 0
 #thresh = 0.5571152601155729/3600 #90th percentile for the -1hr FTLE timeseries, see plot_time_series.py
+#thresh = 0.1742656513095688/3600 #50th percentile for the -1hr FTLE timeseries, see plot_time_series.py
 dirdiv = np.ma.masked_where(concav>0,dirdiv)
 dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv)
 
@@ -129,7 +130,7 @@ for t in range(dim[0]):
     minute = stepsize * (t + 24)
     h, minute = divmod(minute,60)
     x, y = m(star[1],star[0])
-    m.scatter(x,y,marker='*',color='g',s=20*16)
+    m.scatter(x,y,marker='o',color='g',s=20*16)
     plt.annotate('Kentland Farm',xy=(x-0.1*x,y+0.05*y),size=15)
     plt.title("Repulsion Rate, 9-{0}-2017 {1:02d}{2:02d} GMT".format(initday+(inittime+h)//24, (inittime+h)%24, minute),fontsize=18)
     #plt.autoscale(tight=True)

@@ -320,7 +320,7 @@ plt.savefig('s1_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inc
 import numpy as np
 ridges = cr.hr_4_percentile_90()
 li4 = np.percentile(ftle4,90,axis=None)
-li1 = np.percentile(ftle1,90,axis=None)
+li1 = np.percentile(ftle1,50,axis=None)
 lis1 = -np.percentile(-s1,90,axis=None)
 lird = -np.percentile(-h2rhodot[h2rhodot<=0],90,axis=None)
 fig = plt.figure(11,figsize=FigSize)
