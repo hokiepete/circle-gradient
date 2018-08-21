@@ -116,7 +116,7 @@ ridge = m.contour(xx,yy,dirdiv[0,:,:],levels =[0])#,latlon=True)
 
 
 print("Begin Loop")
-for t in range(dim[0]):
+for t in range(1):#dim[0]):
     for c in ridge.collections:
         #if ind == 0
          #   print c.get_segments()
@@ -129,9 +129,15 @@ for t in range(dim[0]):
     #plt.quiverkey(velquiver, 0.9, 0.9, 2, r'$2 \frac{m}{s}$', labelpos='N', coordinates='figure')
     minute = stepsize * (t + 24)
     h, minute = divmod(minute,60)
-    x, y = m(star[1],star[0])
-    m.scatter(x,y,marker='o',color='g',s=20*16)
-    plt.annotate('Kentland Farm',xy=(x-0.1*x,y+0.05*y),size=15)
+    cx = 1200*np.cos(2*np.pi*np.arange(0,1,0.01))
+    cy = 1200*np.sin(2*np.pi*np.arange(0,1,0.01))
+    x, y = m(star[1],star[0]) 
+    a=m.scatter(x,y,marker='o',color='g',s=20*16)
+    print(a)
+    x = cx + x
+    y = cy + y
+    m.scatter(x,y,marker='.',color='r',s=0.1)
+    #plt.annotate('Kentland Farm',xy=(x-0.1*x,y+0.05*y),size=15)
     plt.title("Repulsion Rate, 9-{0}-2017 {1:02d}{2:02d} GMT".format(initday+(inittime+h)//24, (inittime+h)%24, minute),fontsize=18)
     #plt.autoscale(tight=True)
     plt.savefig('Kentland_lcs_{0:04d}.tif'.format(t), transparent=False, bbox_inches='tight')
