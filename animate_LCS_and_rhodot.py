@@ -26,7 +26,7 @@ import h5py as hp
 import scipy.ndimage.filters as filter
 from cyanorangecmap import co
 initday = 4
-inittime = 00-4+4 #Run Initialization(UTC) - 4hrs for EDT Conversion + 4hrs for integration time
+inittime = 00-4 #Run Initialization(UTC) - 4hrs for EDT Conversion
 #inittime = 12-4+4 #Run Initialization(UTC) - 4hrs for EDT Conversion + 4hrs for integration time
 stepsize = 10 #minutes
 '''
