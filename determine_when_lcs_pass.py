@@ -40,11 +40,11 @@ x, y = m(star[1],star[0])
 
 for percent in np.arange(0,101,10):
     thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
-    print('{0}th percentile = {1}'.format(percent,thresh))
     radius=1000
     dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv) 
     passing_times = []
     for t in range(dirdiv.shape[0]):
+        print('{0}th percentile, @ t = {1:04d}'.format(percent,t))
         ridge = m.contour(xx,yy,dirdiv[t,:,:],levels =[0])#,latlon=True)
         pp = ridge.collections[0].get_paths()
         for p in range(len(pp)):
@@ -53,6 +53,7 @@ for percent in np.arange(0,101,10):
                 #print('hit @ {0}'.format(t))
                 passing_times.append(t)
                 break
+        del ridge, pp, v
             
     np.save('passing_files/passing_times_{0:02d}th_percentile_radius={1:04d}'.format(percent,radius),passing_times)
             
