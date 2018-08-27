@@ -45,22 +45,22 @@ def circleaverage(rhodot,time,theta):
     meantime=meantime[0:-1]
     return np.array(meanrho), np.array(meantime)
 
-with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=0-211hrs_Sept2017_int=-1.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-1.hdf5','r') as data:
     ftle1 = 3600*data['ftle'][:].squeeze()
     t1 = data['t'][:].squeeze()
     data.close()
     
-with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=0-211hrs_Sept2017_int=-2.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-2.hdf5','r') as data:
     ftle2 = 3600*data['ftle'][:].squeeze()
     t2 = data['t'][:].squeeze()
     data.close()
     
-with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=0-211hrs_Sept2017_int=-3.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-3.hdf5','r') as data:
     ftle3 = 3600*data['ftle'][:].squeeze()
     t3 = data['t'][:].squeeze()
     data.close()
     
-with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=0-211hrs_Sept2017_int=-4.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-4.hdf5','r') as data:
     ftle4 = 3600*data['ftle'][:].squeeze()
     t4 = data['t'][:].squeeze()
     data.close()
