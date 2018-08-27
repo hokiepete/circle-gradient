@@ -63,7 +63,7 @@ with hp.File('PlottingData.hdf5','r') as data:
     data.close()
     
 
-'''              
+#'''
 import pandas as pd
 Alldata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4,rhodot,p2rhodot,p5rhodot,p10rhodot,p15rhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot,s1,p2s1,p5s1,p10s1,p15s1,h2s1,h5s1,h10s1,h15s1]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4','rhodot','rd 2km path','rhodot 5km path','rhodot 10km path','rhodot 15km path','rhodot 2km simulation','rhodot 5km simulation','rhodot 10km simulation','rhodot 15km simulation','s1','s1 2km path','s1 5km path','s1 10km path','s1 15km path','s1 2km simulation','s1 5km simulation','s1 10km simulation','s1 15km simulation'])
 Alldata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='w')
@@ -82,7 +82,7 @@ ftledata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 #'''
 
-'''
+#'''
 fig = plt.figure(1,figsize=FigSize)
 ax=plt.plot(tw,rhodot,color='k',label="True $\dot{\\rho}$")
 ax2=plt.plot(tw,h2rhodot,color='b',label="Simulated Flight Path, 2km Radius")
