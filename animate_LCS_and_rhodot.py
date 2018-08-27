@@ -76,9 +76,10 @@ m.drawstates()
 m.drawrivers()
 
 with hp.File('850mb_300m_10min_NAM_Rhodot_t=0-215hrs_Sept2017.hdf5','r') as loadfile:
-    rhodot=3600*loadfile['rhodot'][24:,:,:]
+    rhodot=3600*loadfile['rhodot'][:,:,:]
     loadfile.close()
-
+import sys
+sys.exit()
 with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-1.hdf5','r') as loadfile:
     ftle=loadfile['ftle'][:]
     dirdiv=loadfile['directionalderivative'][:]
@@ -116,7 +117,7 @@ ridge = m.contour(xx,yy,dirdiv[0,:,:],levels =[0])#,latlon=True)
 
 
 print("Begin Loop")
-for t in range(1):#dim[0]):
+for t in range(dim[0]):
     for c in ridge.collections:
         #if ind == 0
          #   print c.get_segments()
