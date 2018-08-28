@@ -37,23 +37,25 @@ x = np.linspace(0, m.urcrnrx, dim[2])
 y = np.linspace(0, m.urcrnry, dim[1])
 xx, yy = np.meshgrid(x, y)
 x, y = m(star[1],star[0])
+for radius in [15000,5000,500]:#radius=1000
+    for percent in np.arange(0,101,10):
+        thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
+        dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv) 
+        passing_times = []
+        for t in range(dirdiv.shape[0]):
+            print('{0}th percentile, @ t = {1:04d}'.format(percent,t))
+            ridge = m.contour(xx,yy,dirdiv[t,:,:],levels =[0])#,latlon=True)
+            pp = ridge.collections[0].get_paths()
+            for p in range(len(pp)):
+                v=pp[p].vertices
+                if any((v[:,0]-x)**2+(v[:,1]-y)**2<radius**2):
+                    #print('hit @ {0}'.format(t))
+                    passing_times.append(t)
+                    break
+            del ridge, pp
+        np.save('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}'.format(percent,radius),passing_times)
+        plt.close('all')
 
-for percent in np.arange(0,101,10):
-    thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
-    radius=1000
-    dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv) 
-    passing_times = []
-    for t in range(dirdiv.shape[0]):
-        print('{0}th percentile, @ t = {1:04d}'.format(percent,t))
-        ridge = m.contour(xx,yy,dirdiv[t,:,:],levels =[0])#,latlon=True)
-        pp = ridge.collections[0].get_paths()
-        for p in range(len(pp)):
-            v=pp[p].vertices
-            if any((v[:,0]-x)**2+(v[:,1]-y)**2<radius**2):
-                #print('hit @ {0}'.format(t))
-                passing_times.append(t)
-                break
-        del ridge, pp, v
-            
-    np.save('passing_files/passing_times_{0:02d}th_percentile_radius={1:04d}'.format(percent,radius),passing_times)
-            
+
+
+        

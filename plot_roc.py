@@ -12,7 +12,7 @@ rhodot_FPR = []
 s1_TPR = []
 s1_FPR = []
 
-radius = 1000
+radius = 10000
 with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
     rhodot = data['rhodot'][:].squeeze()
     s1 = data['s1'][:].squeeze()
@@ -20,7 +20,7 @@ with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') 
     data.close()
 
 for percent in np.arange(0,101,10):
-    passing_times = np.load('passing_files/passing_times_{0:02d}th_percentile_radius={1:04d}.np.npy'.format(percent,radius))+24            
+    passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
     thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
     thresh_s1 = -np.percentile(-s1[s1<0],percent)
     
@@ -46,8 +46,15 @@ for percent in np.arange(0,101,10):
     rhodot_total_positive = rhodot_true_positive+rhodot_false_positive
     rhodot_total_negative = rhodot_true_negative+rhodot_false_negative
     
-    rhodot_TPR.append(rhodot_true_positive/(rhodot_true_positive+rhodot_false_negative))
-    rhodot_FPR.append(rhodot_false_positive/(rhodot_false_positive+rhodot_true_negative))
+    if rhodot_true_positive+rhodot_false_negative != 0:
+        rhodot_TPR.append(rhodot_true_positive/(rhodot_true_positive+rhodot_false_negative))
+    else:
+        rhodot_TPR.append(np.nan)
+    
+    if rhodot_false_positive+rhodot_true_negative != 0:
+        rhodot_FPR.append(rhodot_false_positive/(rhodot_false_positive+rhodot_true_negative))
+    else:
+        rhodot_FPR.append(np.nan)
     
     
     s1_true_positive = 0
@@ -71,8 +78,19 @@ for percent in np.arange(0,101,10):
     s1_total_false = s1_false_positive+s1_false_negative
     s1_total_positive = s1_true_positive+s1_false_positive
     s1_total_negative = s1_true_negative+s1_false_negative
-    s1_TPR.append(s1_true_positive/(s1_true_positive+s1_false_negative))
-    s1_FPR.append(s1_false_positive/(s1_false_positive+s1_true_negative))
+    
+    if s1_true_positive+s1_false_negative != 0:
+        s1_TPR.append(s1_true_positive/(s1_true_positive+s1_false_negative))
+    else:
+        s1_TPR.append(np.nan)
+    
+    if s1_false_positive+s1_true_negative != 0:
+        s1_FPR.append(s1_false_positive/(s1_false_positive+s1_true_negative))
+    else:
+        s1_FPR.append(np.nan)
+    
+    #s1_TPR.append(s1_true_positive/(s1_true_positive+s1_false_negative))
+    #s1_FPR.append(s1_false_positive/(s1_false_positive+s1_true_negative))
 
 import matplotlib.pyplot as plt
 plt.close('all')
