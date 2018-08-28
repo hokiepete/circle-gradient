@@ -31,20 +31,20 @@ with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-1.hdf5','r') as 
     concav=loadfile['concavity'][:]
     loadfile.close()
 
-dirdiv = np.ma.masked_where(concav>0,dirdiv)
+dirdiv= np.ma.masked_where(concav>0,dirdiv)
 
 x = np.linspace(0, m.urcrnrx, dim[2])
 y = np.linspace(0, m.urcrnry, dim[1])
 xx, yy = np.meshgrid(x, y)
 x, y = m(star[1],star[0])
-for radius in [15000,5000,500]:#radius=1000
-    for percent in np.arange(0,101,10):
+for radius in [1,10,100,500,1000,5000,10000,15000]:#radius=1000
+    for percent in np.arange(0,101,5):
         thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
-        dirdiv = np.ma.masked_where(ftle<=thresh,dirdiv) 
+        dirdiv_plot = np.ma.masked_where(ftle<=thresh,dirdiv) 
         passing_times = []
         for t in range(dirdiv.shape[0]):
             print('{0}th percentile, @ t = {1:04d}'.format(percent,t))
-            ridge = m.contour(xx,yy,dirdiv[t,:,:],levels =[0])#,latlon=True)
+            ridge = m.contour(xx,yy,dirdiv_plot[t,:,:],levels =[0])#,latlon=True)
             pp = ridge.collections[0].get_paths()
             for p in range(len(pp)):
                 v=pp[p].vertices
@@ -53,8 +53,10 @@ for radius in [15000,5000,500]:#radius=1000
                     passing_times.append(t)
                     break
             del ridge, pp
-        np.save('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}'.format(percent,radius),passing_times)
+        del dirdiv_plot
         plt.close('all')
+        np.save('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}'.format(percent,radius),passing_times)
+        
 
 
 
