@@ -21,7 +21,8 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     s1_TPR = []
     s1_FPR = []
     for percent in np.arange(0,101,1):
-        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
+        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(0,radius))+24            
+        #passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
         thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
         thresh_s1 = -np.percentile(-s1[s1<0],percent)
         
@@ -116,8 +117,8 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     plt.title('Rhodot, radius = {0} meters'.format(radius))
     plt.xlim([-0.1,1.1])
     plt.ylim([-0.1,1.1])
-    #plt.axis('equal')
-    plt.savefig('Rhodot_ROC_radius={0:05d}.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+    plt.savefig('Rhodot_ROC_radius={0:05d}_no_ftle_thresh.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+    #plt.savefig('Rhodot_ROC_radius={0:05d}.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
     
     plt.figure(2)
     plt.plot([0,1],[0,1],'b--')
@@ -128,8 +129,8 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     plt.title('s1, radius = {0} meters'.format(radius))
     plt.xlim([-0.1,1.1])
     plt.ylim([-0.1,1.1])
-    #plt.axis('equal')
-    plt.savefig('S1_ROC_radius={0:05d}.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+    plt.savefig('S1_ROC_radius={0:05d}_no_ftle_thresh.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+    #plt.savefig('S1_ROC_radius={0:05d}.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
     '''
     plt.figure(3)
     plt.plot(s1,'b')
