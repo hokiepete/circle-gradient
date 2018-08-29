@@ -38,7 +38,7 @@ y = np.linspace(0, m.urcrnry, dim[1])
 xx, yy = np.meshgrid(x, y)
 x, y = m(star[1],star[0])
 for radius in [1,10,100,500,1000,5000,10000,15000]:#radius=1000
-    for percent in np.arange(0,101,5):
+    for percent in np.arange(0,101,1):
         thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
         dirdiv_plot = np.ma.masked_where(ftle<=thresh,dirdiv) 
         passing_times = []

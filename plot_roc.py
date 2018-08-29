@@ -20,7 +20,7 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     rhodot_FPR = []
     s1_TPR = []
     s1_FPR = []
-    for percent in np.arange(0,101,5):
+    for percent in np.arange(0,101,1):
         passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
         thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
         thresh_s1 = -np.percentile(-s1[s1<0],percent)
@@ -110,7 +110,7 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     plt.figure(1)
     plt.plot([0,1],[0,1],'b--')
     plt.plot(rhodot_FPR,rhodot_TPR,'r-')
-    plt.scatter(rhodot_FPR,rhodot_TPR,color='r')
+    #plt.scatter(rhodot_FPR,rhodot_TPR,color='r')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('Rhodot, radius = {0} meters'.format(radius))
@@ -122,7 +122,7 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     plt.figure(2)
     plt.plot([0,1],[0,1],'b--')
     plt.plot(s1_FPR,s1_TPR,'r-')
-    plt.scatter(s1_FPR,s1_TPR,color='r')
+    #plt.scatter(s1_FPR,s1_TPR,color='r')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('s1, radius = {0} meters'.format(radius))
