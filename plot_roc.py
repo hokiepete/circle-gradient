@@ -21,7 +21,7 @@ for radius in [1,10,100,500,1000,5000,10000,15000]:
     s1_TPR = []
     s1_FPR = []
     for percent in np.arange(0,101,1):
-        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(0,radius))+24            
+        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(50,radius))+24            
         #passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
         thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
         thresh_s1 = -np.percentile(-s1[s1<0],percent)
