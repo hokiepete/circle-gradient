@@ -15,7 +15,7 @@ with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') 
     s1 = data['s1'][:].squeeze()
     t = data['t'][:].squeeze()
     data.close()
-for radius in np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:
+for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.append(np.linspace(100,10000,37),np.array([1,10,100,500,1000,5000,10000,15000])):
     radius=int(radius)
     rhodot_TPR = []
     rhodot_FPR = []
