@@ -52,9 +52,9 @@ def lonlat2m(ref_lon,ref_lat,lon,lat,std_lat1=30,std_lat2=60):
     p0 = R*F*(cot(0.25*numpy.pi+0.5*ref_lat)**n)
     p = R*F*(cot(0.25*numpy.pi+0.5*lat)**n)
     th = n*(lon-ref_lon)
-    x=p*numpy.sin(th)*1000
-    y=p0-p*numpy.cos(th)*1000
-    return x,y
+    x=p*numpy.sin(th)
+    y=p0-p*numpy.cos(th)
+    return x*1000,y*1000
 
 def km2lonlat(ref_lon,ref_lat,x,y,std_lat1=30,std_lat2=60):
     #KM2LONLAT Summary of this function goes here
@@ -117,3 +117,40 @@ def co():
                   (0.5, 1.0000, 1.0000),
                   (1.0, 0.0000, 0.0000)]}
     return cdict
+
+def circleaverage(rhodot,time,theta):
+    theta=numpy.mod(theta-theta[0],-2*numpy.pi)
+    #%theta=mod(theta1,-2*pi);
+    temprho = []
+    temptime = []
+    meanrho = []
+    meantime = []
+    temprho.append(rhodot[0])
+    temptime.append(time[0])
+    #tempindex = 1
+    #meanindex = 0
+    previoustheta = theta[0]
+    for i in range(1,theta.size):
+        if previoustheta < theta[i]:
+            meanrho.append(numpy.mean(temprho))
+            meantime.append(numpy.mean(temptime))
+            del temprho, temptime
+            temprho =[]
+            temptime = []
+            #tempindex=0
+            #meanindex=meanindex+1
+            temprho.append(rhodot[i])
+            temptime.append(time[i])
+        else:
+            temprho.append(rhodot[i])
+            temptime.append(time[i])
+            #tempindex = tempindex+1
+
+        previoustheta = theta[i]
+
+    meanrho.append(numpy.mean(temprho))
+    meantime.append(numpy.mean(temptime))
+    del temprho, temptime
+    meanrho=meanrho[0:-1]
+    meantime=meantime[0:-1]
+    return numpy.array(meanrho), numpy.array(meantime)
