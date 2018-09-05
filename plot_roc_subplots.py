@@ -13,12 +13,12 @@ import matplotlib.ticker as ticker
 matplotlib.rcParams['text.usetex']=True
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['lines.linewidth']=1
-matplotlib.rcParams['lines.markersize']=3
+matplotlib.rcParams['lines.markersize']=2
 plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
 titlefont = {'fontsize':12}
 labelfont = {'fontsize':10}
 tickfont = {'fontsize':8}
-"""
+time_step_offset = 24
 rhodot_TPR_all_int05 = []
 rhodot_FPR_all_int05 = []
 s1_TPR_all_int05 = []
@@ -31,7 +31,8 @@ rhodot_TPR_all_int2 = []
 rhodot_FPR_all_int2 = []
 s1_TPR_all_int2 = []
 s1_FPR_all_int2 = []
-with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
+#with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
+with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
     rhodot = data['rhodot'][:].squeeze()
     s1 = data['s1'][:].squeeze()
     t = data['t'][:].squeeze()
@@ -51,7 +52,7 @@ for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.ap
     s1_TPR_int05 = []
     s1_FPR_int05 = []
     for percent in np.arange(0,101,1):
-        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(90,radius))+24            
+        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(90,radius))+time_step_offset          
         #passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
         thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
         thresh_s1 = -np.percentile(-s1[s1<0],percent)
@@ -121,7 +122,7 @@ for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.ap
         else:
             s1_FPR_int1.append(np.nan)
 
-        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-2.npy'.format(90,radius))+24            
+        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-2.npy'.format(90,radius))+time_step_offset            
         
         rhodot_true_positive = 0
         rhodot_false_positive = 0
@@ -188,7 +189,7 @@ for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.ap
         else:
             s1_FPR_int2.append(np.nan)
         
-        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-0,5.npy'.format(90,radius))+24            
+        passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-0,5.npy'.format(90,radius))+time_step_offset            
         
         rhodot_true_positive = 0
         rhodot_false_positive = 0
@@ -268,7 +269,7 @@ for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.ap
     s1_TPR_all_int05.append(s1_TPR_int05)
     s1_FPR_all_int05.append(s1_FPR_int05)
 
-"""
+#"""
 plt.close('all')
 figwidth = 6
 FigSize=(figwidth, figwidth)
@@ -410,7 +411,9 @@ plt.yticks([])
 plt.xticks(**tickfont)
 plt.axis('equal')
 
-plt.savefig('Rhodot_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('Rhodot_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
 
 plt.figure(2,figsize=FigSize)
 plt.subplot(331)
@@ -550,4 +553,6 @@ plt.yticks([])
 plt.xticks(**tickfont)
 plt.axis('equal')
 
-plt.savefig('Rhodot_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
