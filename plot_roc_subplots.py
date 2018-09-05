@@ -18,7 +18,7 @@ plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
 titlefont = {'fontsize':12}
 labelfont = {'fontsize':10}
 tickfont = {'fontsize':8}
-
+"""
 rhodot_TPR_all_int05 = []
 rhodot_FPR_all_int05 = []
 s1_TPR_all_int05 = []
@@ -268,7 +268,7 @@ for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.ap
     s1_TPR_all_int05.append(s1_TPR_int05)
     s1_FPR_all_int05.append(s1_FPR_int05)
 
-
+"""
 plt.close('all')
 figwidth = 6
 FigSize=(figwidth, figwidth)
