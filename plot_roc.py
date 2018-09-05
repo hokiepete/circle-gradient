@@ -7,7 +7,12 @@ Created on Sun Aug 26 16:46:36 206
 
 import numpy as np
 import h5py as hp
+import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+matplotlib.rcParams['text.usetex']=True
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
 
 
 with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:

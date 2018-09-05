@@ -11,7 +11,7 @@ import scipy.interpolate as sint
 #import scipy.io as sio
 import matplotlib.pyplot as plt
 
-with hp.File('FTLEOutput_int=-3.mat','r') as data:
+with hp.File('FTLEOutput_int=-0,5.mat','r') as data:
     ftle = data['F'][:,::3,:]
 del data
 
@@ -34,7 +34,7 @@ for tt in range(len(t)):
     #rhodot_origin[tt] = f(x0,y0)
     #tck = sint.bisplrep(x, y, rhodot[tt,:,:], s=0)
     #rhodot_origin[tt] = sint.bisplev(x0,y0,tck)
-with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-3.hdf5','w') as savefile:
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-0,5.hdf5','w') as savefile:
         savefile.create_dataset('t',shape=t.shape,data=t)
         savefile.create_dataset('ftle',shape=ftle_origin.shape,data=ftle_origin)
         savefile.close()

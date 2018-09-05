@@ -7,7 +7,7 @@ Created on Mon Jul 23 12:53:58 2018
 import numpy as np
 import h5py as hp
 
-with hp.File('FTLEOutput_int=-1.mat','r') as loadfile:
+with hp.File('FTLEOutput_int=-0,5.mat','r') as loadfile:
     ftlein = np.swapaxes(loadfile['F'][:,::3,:],1,2)
     eig1in = np.swapaxes(loadfile['F'][:,1::3,:],1,2)
     eig2in = np.swapaxes(loadfile['F'][:,2::3,:],1,2)
@@ -38,7 +38,7 @@ for t in range(dim[0]):
                 concav[t,i,j] = np.ma.masked
 
 
-with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-1.hdf5','w') as savefile:
+with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-0,5.hdf5','w') as savefile:
         savefile.create_dataset('ftle',shape=ftlein.shape,data=ftlein)
         savefile.create_dataset('concavity',shape=concav.shape,data=concav)
         savefile.create_dataset('directionalderivative',shape=dirdiv.shape,data=dirdiv)

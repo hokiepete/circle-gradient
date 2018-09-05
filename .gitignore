@@ -16,3 +16,7 @@ FTLEOutput_int=-4.mat
 850mb_300m_10min_NAM_LCS_t=0-211hrs_Sept2017.hdf5
 850mb_300m_10min_NAM_LCS_t=0-211hrs_Sept2017_int=-1.hdf5
 Correlation_and_FLight_stats.csv
+850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-0,5.hdf5
+850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-0,5.hdf5
+850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-2.hdf5
+FTLEOutput_int=-0,5.mat
