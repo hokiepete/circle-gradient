@@ -7,12 +7,14 @@ Created on Wed Jun 13 15:59:44 2018
 import h5py as hp
 #from matplotlib import use, rc
 import matplotlib
+import numpy as np
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 plt.close('all')
-#matplotlib.rcParams['text.usetex']=True
-#matplotlib.rcParams['mathtext.fontset'] = 'cm'
-#plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
+matplotlib.rcParams['text.usetex']=True
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
+matplotlib.rcParams['lines.linewidth'] = 1
 import matplotlib.font_manager as font_manager
 import cRidge_passing_times as cr
 # Define font styles as dictionaries
@@ -38,6 +40,7 @@ def get_axis_limits(ax, scale=.9):
 
 with hp.File('PlottingData.hdf5','r') as data:
     tw=data['tw'][:]
+    ftle05=data['ftle05'][:]
     ftle1=data['ftle1'][:]
     ftle2=data['ftle2'][:]
     ftle3=data['ftle3'][:]
@@ -63,9 +66,9 @@ with hp.File('PlottingData.hdf5','r') as data:
     data.close()
     
 
-#'''
+'''
 import pandas as pd
-Alldata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4,rhodot,p2rhodot,p5rhodot,p10rhodot,p15rhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot,s1,p2s1,p5s1,p10s1,p15s1,h2s1,h5s1,h10s1,h15s1]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4','rhodot','rd 2km path','rhodot 5km path','rhodot 10km path','rhodot 15km path','rhodot 2km simulation','rhodot 5km simulation','rhodot 10km simulation','rhodot 15km simulation','s1','s1 2km path','s1 5km path','s1 10km path','s1 15km path','s1 2km simulation','s1 5km simulation','s1 10km simulation','s1 15km simulation'])
+Alldata = pd.DataFrame(np.transpose([ftle05,ftle1,ftle2,ftle3,ftle4,rhodot,p2rhodot,p5rhodot,p10rhodot,p15rhodot,h2rhodot,h5rhodot,h10rhodot,h15rhodot,s1,p2s1,p5s1,p10s1,p15s1,h2s1,h5s1,h10s1,h15s1]),columns=['FTLE int=-05','FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4','rhodot','rd 2km path','rhodot 5km path','rhodot 10km path','rhodot 15km path','rhodot 2km simulation','rhodot 5km simulation','rhodot 10km simulation','rhodot 15km simulation','s1','s1 2km path','s1 5km path','s1 10km path','s1 15km path','s1 2km simulation','s1 5km simulation','s1 10km simulation','s1 15km simulation'])
 Alldata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='w')
 B=Alldata.describe()
 B.to_csv('Correlation_and_FLight_stats.csv',mode='a')
@@ -77,7 +80,7 @@ rhodata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 s1data = pd.DataFrame(np.transpose([s1,p2s1,p5s1,p10s1,p15s1,h2s1,h5s1,h10s1,h15s1]),columns=['s1','2km path','5km path','10km path','15km path','2km simulation','5km simulation','10km simulation','15km simulation'])
 s1data.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 s1data.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
-ftledata = pd.DataFrame(np.transpose([ftle1,ftle2,ftle3,ftle4]),columns=['FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4'])
+ftledata = pd.DataFrame(np.transpose([ftle05,ftle1,ftle2,ftle3,ftle4]),columns=['FTLE int=-05','FTLE int=-1','FTLE int=-2','FTLE int=-3','FTLE int=-4'])
 ftledata.corr().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 ftledata.describe().to_csv('Correlation_and_FLight_stats.csv',mode='a')
 #'''
@@ -265,8 +268,9 @@ plt.savefig('s1_idealized_vs_simulated.eps', transparent=True, bbox_inches='tigh
 fig = plt.figure(7,figsize=FigSize)
 plt.axhline(0,color='k')
 ax1=plt.plot(tw,rhodot,color='purple',label="$\dot{\\rho}$")
+axf05=plt.plot(tw,-ftle05,color='g',label="FTLE -0.5hr")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
-axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+axf4=plt.plot(tw,-ftle2,color='c',label="FTLE -2hr")
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
@@ -275,11 +279,13 @@ plt.ylabel('hr$^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.savefig('rhodot_vs_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
+'''
 fig = plt.figure(8,figsize=FigSize)
 plt.axhline(0,color='k')
 ax1=plt.plot(tw,rhodot,color='purple',label="$\dot{\\rho}$")
+axf05=plt.plot(tw,-ftle05,color='g',label="FTLE -0.5hr")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
-axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+axf4=plt.plot(tw,-ftle2,color='c',label="FTLE -2hr")
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
@@ -288,12 +294,14 @@ plt.ylabel('hr$^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('rhodot_vs_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
+#'''
 
 fig = plt.figure(9,figsize=FigSize)
 plt.axhline(0,color='k')
 ax2=plt.plot(tw,s1,color='r',label="$s_{1}$")
+axf05=plt.plot(tw,-ftle05,color='g',label="FTLE -0.5hr")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
-axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+axf4=plt.plot(tw,-ftle2,color='c',label="FTLE -2hr")
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
@@ -302,11 +310,13 @@ plt.ylabel('hr$^{-1}$',**labelfont)
 plt.ylim([-2.1,1.25])
 plt.savefig('s1_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 
+'''
 fig = plt.figure(10,figsize=FigSize)
 plt.axhline(0,color='k')
 ax2=plt.plot(tw,s1,color='r',label="$s_{1}$")
+axf05=plt.plot(tw,-ftle05,color='g',label="FTLE -0.5hr")
 axf1=plt.plot(tw,-ftle1,color='b',label="FTLE -1hr")
-axf4=plt.plot(tw,-ftle4,color='c',label="FTLE -4hr")
+axf4=plt.plot(tw,-ftle2,color='c',label="FTLE -2hr")
 plt.autoscale(enable=True, axis='x', tight=True)
 plt.legend(prop = font,loc=4)
 plt.yticks(**tickfont)
@@ -316,8 +326,7 @@ plt.ylim([-2.1,1.25])
 plt.xlim([tw.min(),70])
 plt.savefig('s1_FTLE_closeup.eps', transparent=True, bbox_inches='tight',pad_inches=0)
 #'''
-
-import numpy as np
+"""
 ridges = cr.hr_4_percentile_90()
 li4 = np.percentile(ftle4,90,axis=None)
 li1 = np.percentile(ftle1,50,axis=None)
@@ -356,7 +365,7 @@ plt.xticks(**tickfont)
 plt.ylabel('hr$^{-1}$',**labelfont)
 plt.ylim([-2.1,0.25])
 plt.savefig('s1_rhodot_FTLE.eps', transparent=True, bbox_inches='tight',pad_inches=0)
-
+#"""
 '''
 fig = plt.figure(12,figsize=FigSize)
 plt.axhline(0,color='k')

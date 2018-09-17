@@ -45,11 +45,16 @@ def circleaverage(rhodot,time,theta):
     meantime=meantime[0:-1]
     return np.array(meanrho), np.array(meantime)
 
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-0,5.hdf5','r') as data:
+    ftle05 = 3600*data['ftle'][:].squeeze()
+    t05 = data['t'][:].squeeze()
+    data.close()
+
 with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-1.hdf5','r') as data:
     ftle1 = 3600*data['ftle'][:].squeeze()
     t1 = data['t'][:].squeeze()
     data.close()
-    
+
 with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-2.hdf5','r') as data:
     ftle2 = 3600*data['ftle'][:].squeeze()
     t2 = data['t'][:].squeeze()
@@ -147,10 +152,12 @@ p15rhodot, delete = circleaverage(p15rhodot,p15t,p15theta)
 p15s1, p15t = circleaverage(p15s1,p15t,p15theta)    
 del delete
     
-tmin = np.max([t1.min(),t2.min(),t3.min(),t4.min(),t.min(),p2t.min(),p5t.min(),p10t.min(),p15t.min(),h2t.min(),h5t.min(),h10t.min(),h15t.min()])
-tmax = np.min([t1.max(),t2.max(),t3.max(),t4.max(),t.max(),p2t.max(),p5t.max(),p10t.max(),p15t.max(),h2t.max(),h5t.max(),h10t.max(),h15t.max()])
+tmin = np.max([t05.min(),t1.min(),t2.min(),t3.min(),t4.min(),t.min(),p2t.min(),p5t.min(),p10t.min(),p15t.min(),h2t.min(),h5t.min(),h10t.min(),h15t.min()])
+tmax = np.min([t05.max(),t1.max(),t2.max(),t3.max(),t4.max(),t.max(),p2t.max(),p5t.max(),p10t.max(),p15t.max(),h2t.max(),h5t.max(),h10t.max(),h15t.max()])
 tw = h2t[h2t>=tmin]
 tw = tw[tw<=tmax]
+tcku = sint.splrep(t05, ftle05, s=0)
+ftle05 = sint.splev(tw, tcku, der=0)
 tcku = sint.splrep(t1, ftle1, s=0)
 ftle1 = sint.splev(tw, tcku, der=0)
 tcku = sint.splrep(t2, ftle2, s=0)
@@ -203,6 +210,7 @@ del tcku, h2t, h5t, h10t, h15t, p2t, p5t, p10t, p15t, t, tmin, tmax
 
 with hp.File('PlottingData.hdf5','w') as savefile:
     savefile.create_dataset('tw',shape=tw.shape,data=tw)
+    savefile.create_dataset('ftle05',shape=ftle05.shape,data=ftle05)
     savefile.create_dataset('ftle1',shape=ftle1.shape,data=ftle1)
     savefile.create_dataset('ftle2',shape=ftle2.shape,data=ftle2)
     savefile.create_dataset('ftle3',shape=ftle3.shape,data=ftle3)
