@@ -20,3 +20,8 @@ Correlation_and_FLight_stats.csv
 850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-0,5.hdf5
 850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-2.hdf5
 FTLEOutput_int=-0,5.mat
+myfile_u.csv
+myfile_v.csv
+myfile_w.csv
+NAM_Velocity_t=0-215hrs_Sept2017_300m_15min_Res.hdf5
+romsvelplot.raw.plt
