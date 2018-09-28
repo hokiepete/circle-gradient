@@ -25,3 +25,5 @@ myfile_v.csv
 myfile_w.csv
 NAM_Velocity_t=0-215hrs_Sept2017_300m_15min_Res.hdf5
 romsvelplot.raw.plt
+NAM_3D_Velocity_t=0-215hrs_Sept2017_300m_10min_Res.hdf5
+NAM_gridpoints.hdf5
