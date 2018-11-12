@@ -37,7 +37,7 @@ x = np.linspace(0, m.urcrnrx, dim[2])
 y = np.linspace(0, m.urcrnry, dim[1])
 xx, yy = np.meshgrid(x, y)
 x, y = m(star[1],star[0])
-for radius in [200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:#radius=1000
+for radius in [400,1200]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:#radius=1000
     for percent in np.arange(0,101,1):
         thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
         dirdiv_plot = np.ma.masked_where(ftle<=thresh,dirdiv) 
