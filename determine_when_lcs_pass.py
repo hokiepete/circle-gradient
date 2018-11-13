@@ -63,7 +63,7 @@ for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2
             del ridge, pp
         del dirdiv_plot
         plt.close('all')
-        np.save('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-0,5'.format(percent,int(radius)),passing_times)
+        np.save(filename,passing_times)
         
 
 
