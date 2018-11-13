@@ -21,11 +21,11 @@ m = Basemap(width=77700,height=76800,\
     resolution='c',area_thresh=0.,projection='lcc',\
     lat_1=35.,lat_0=origin[0],lon_0=origin[1])#,ax=ax)
 
-with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-2.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_FTLE_Origin_t=4-215hrs_Sept2017_int=-0,5.hdf5','r') as data:
     ftle1 = data['ftle'][:].squeeze()
     data.close()
 
-with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-2.hdf5','r') as loadfile:
+with hp.File('850mb_300m_10min_NAM_LCS_t=4-215hrs_Sept2017_int=-0,5.hdf5','r') as loadfile:
     ftle=loadfile['ftle'][:]
     dirdiv=loadfile['directionalderivative'][:]
     concav=loadfile['concavity'][:]
@@ -37,7 +37,7 @@ x = np.linspace(0, m.urcrnrx, dim[2])
 y = np.linspace(0, m.urcrnry, dim[1])
 xx, yy = np.meshgrid(x, y)
 x, y = m(star[1],star[0])
-for radius in [400,1200]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:#radius=1000
+for radius in [4000]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:#radius=1000
     for percent in np.arange(0,101,1):
         thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
         dirdiv_plot = np.ma.masked_where(ftle<=thresh,dirdiv) 
@@ -55,7 +55,7 @@ for radius in [400,1200]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300
             del ridge, pp
         del dirdiv_plot
         plt.close('all')
-        np.save('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-2'.format(percent,int(radius)),passing_times)
+        np.save('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-0,5'.format(percent,int(radius)),passing_times)
         
 
 
