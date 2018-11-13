@@ -43,28 +43,28 @@ x, y = m(star[1],star[0])
 for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:#radius=1000
     for percent in np.arange(0,101,1):
         filename = 'passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int='.format(percent,int(radius))+integration
-        if os.path.isfile(filename):
-            print(filename+' exits.')
-            continue
-        print(filename)
-        thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
-        dirdiv_plot = np.ma.masked_where(ftle<=thresh,dirdiv) 
-        passing_times = []
-        for t in range(dirdiv.shape[0]):
-            print('{0}th percentile, @ t = {1:04d}'.format(percent,t))
-            ridge = m.contour(xx,yy,dirdiv_plot[t,:,:],levels =[0])#,latlon=True)
-            pp = ridge.collections[0].get_paths()
-            for p in range(len(pp)):
-                v=pp[p].vertices
-                if any((v[:,0]-x)**2+(v[:,1]-y)**2<radius**2):
-                    #print('hit @ {0}'.format(t))
-                    passing_times.append(t)
-                    break
-            del ridge, pp
-        del dirdiv_plot
-        plt.close('all')
-        np.save(filename,passing_times)
-        
+        if not os.path.isfile(filename):
+            #print(filename+' exits.')
+            #continue
+            print(filename)
+            thresh=np.percentile(ftle1[ftle1>0],percent,axis=None)
+            dirdiv_plot = np.ma.masked_where(ftle<=thresh,dirdiv) 
+            passing_times = []
+            for t in range(dirdiv.shape[0]):
+                #print('{0}th percentile, @ t = {1:04d}'.format(percent,t))
+                ridge = m.contour(xx,yy,dirdiv_plot[t,:,:],levels =[0])#,latlon=True)
+                pp = ridge.collections[0].get_paths()
+                for p in range(len(pp)):
+                    v=pp[p].vertices
+                    if any((v[:,0]-x)**2+(v[:,1]-y)**2<radius**2):
+                        #print('hit @ {0}'.format(t))
+                        passing_times.append(t)
+                        break
+                del ridge, pp
+            del dirdiv_plot
+            plt.close('all')
+            np.save(filename,passing_times)
+            
 
 
 
