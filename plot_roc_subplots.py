@@ -38,7 +38,7 @@ with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') 
     s1 = data['s1'][:].squeeze()
     t = data['t'][:].squeeze()
     data.close()
-for radius in [500,1000,2000,3000,4000,5000,7500,10000]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.append(np.linspace(100,10000,37),np.array([1,10,100,500,1000,5000,10000,15000])):
+for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.append(np.linspace(100,10000,37),np.array([1,10,100,500,1000,5000,10000,15000])):
     radius=int(radius)
     rhodot_TPR_int1 = []
     rhodot_FPR_int1 = []
@@ -52,7 +52,7 @@ for radius in [500,1000,2000,3000,4000,5000,7500,10000]:#[200,500,800,1000,2000,
     rhodot_FPR_int05 = []
     s1_TPR_int05 = []
     s1_FPR_int05 = []
-    for percent in np.arange(0,101,1):
+    for percent in np.linspace(0,100,2):#np.arange(0,101,1):
         print(radius,percent)
         passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(90,radius))+time_step_offset          
         #passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
