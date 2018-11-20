@@ -43,7 +43,7 @@ x, y = m(star[1],star[0])
 for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2000,3500,5000,7500,10000]:#[200,300,400]:#np.linspace(100,10000,37):#[1,10,100,500,1000,5000,10000,15000]:#radius=1000
     for percent in np.arange(0,101,1):
         filename = 'passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int='.format(percent,int(radius))+integration
-        if not os.path.isfile(filename):
+        if not os.path.isfile(filename+'.npy'):
             #print(filename+' exits.')
             #continue
             print(filename)
