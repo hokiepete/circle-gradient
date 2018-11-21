@@ -32,8 +32,8 @@ rhodot_TPR_all_int2 = []
 rhodot_FPR_all_int2 = []
 s1_TPR_all_int2 = []
 s1_FPR_all_int2 = []
-#with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
-with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
+#with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
     rhodot = data['rhodot'][:].squeeze()
     s1 = data['s1'][:].squeeze()
     t = data['t'][:].squeeze()
@@ -52,7 +52,7 @@ for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2
     rhodot_FPR_int05 = []
     s1_TPR_int05 = []
     s1_FPR_int05 = []
-    for percent in np.linspace(0,100,2):#np.arange(0,101,1):
+    for percent in np.arange(0,101,1):
         print(radius,percent)
         passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-1.npy'.format(90,radius))+time_step_offset          
         #passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
@@ -417,10 +417,10 @@ plt.yticks([])
 plt.xticks(**tickfont)
 plt.axis('equal')
 
-#plt.savefig('Rhodot_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('Rhodot_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('Rhodot_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('Rhodot_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('Rhodot_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('Rhodot_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
 
 plt.figure(2,figsize=FigSize)
 gs = gridspec.GridSpec(3, 3)
@@ -563,7 +563,7 @@ plt.yticks([])
 plt.xticks(**tickfont)
 plt.axis('equal')
 
-#plt.savefig('s1_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('s1_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('s1_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('s1_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
