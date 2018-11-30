@@ -32,8 +32,8 @@ rhodot_TPR_all_int2 = []
 rhodot_FPR_all_int2 = []
 s1_TPR_all_int2 = []
 s1_FPR_all_int2 = []
-#with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
-with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
+with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
+#with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
     rhodot = data['rhodot'][:].squeeze()
     s1 = data['s1'][:].squeeze()
     t = data['t'][:].squeeze()
@@ -417,10 +417,10 @@ plt.yticks([])
 plt.xticks(**tickfont)
 plt.axis('equal')
 
-#plt.savefig('Rhodot_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('Rhodot_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('Rhodot_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('Rhodot_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('Rhodot_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('Rhodot_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
 
 plt.figure(2,figsize=FigSize)
 gs = gridspec.GridSpec(3, 3)
@@ -563,7 +563,7 @@ plt.yticks([])
 plt.xticks(**tickfont)
 plt.axis('equal')
 
-#plt.savefig('s1_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('s1_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('s1_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('s1_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots_hunterflight.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots_hunterflight.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
