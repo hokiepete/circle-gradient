@@ -258,19 +258,7 @@ for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2
         if s1_false_positive+s1_true_negative != 0:
             s1_FPR_int05.append(s1_false_positive/(s1_false_positive+s1_true_negative))
         else:
-            s1_FPR_int05.append(np.nan)
-    '''
-    FPR_x_05 = s1_FPR_int05[0]
-    FPR_x_1 = s1_FPR_int1[0]
-    FPR_x_2 = s1_FPR_int2[0]
-    for i in range(1,len(s1_FPR_int05)):
-        if s1_FPR_int05[i] <= FPR_x_05:
-            s1_FPR_int05[i] = FPR_x_05 + 1e-10
-        if s1_FPR_int1[i] <= FPR_x_1:
-            s1_FPR_int1[i] = FPR_x_1 + 1e-10
-        if s1_FPR_int2[i] <= FPR_x_2:
-            s1_FPR_int2[i] = FPR_x_2 + 1e-10
-    '''     
+            s1_FPR_int05.append(np.nan) 
             
     rhodot_TPR_all_int1.append(rhodot_TPR_int1)
     rhodot_FPR_all_int1.append(rhodot_FPR_int1)
@@ -288,7 +276,7 @@ for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2
 
 
 
-#"""
+#'''
 plt.close('all')
 figwidth = 6
 FigSize=(figwidth, figwidth)
@@ -296,19 +284,23 @@ plt.figure(1,figsize=FigSize)
 gs = gridspec.GridSpec(3, 3)
 gs.update(wspace=0.05, hspace=0.05)
 
-
+mean = []
 for P in range(9):
-    plt.subplot(gs[P])
+    ax=plt.subplot(gs[P])
     plt.plot([0,1],[0,1],'k:')
-    plt.plot(rhodot_FPR_all_int05[P],rhodot_TPR_all_int05[P],'g--')
-    plt.scatter(rhodot_FPR_all_int05[P][::20],rhodot_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int05[P],rhodot_FPR_all_int05[P])/rhodot_FPR_all_int05[P][-1]))
-    plt.plot(rhodot_FPR_all_int1[P],rhodot_TPR_all_int1[P],'r-')
-    plt.scatter(rhodot_FPR_all_int1[P][::20],rhodot_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int1[P],rhodot_FPR_all_int1[P])/rhodot_FPR_all_int1[P][-1]))
-    plt.plot(rhodot_FPR_all_int2[P],rhodot_TPR_all_int2[P],'b-.')
-    plt.scatter(rhodot_FPR_all_int2[P][::20],rhodot_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int2[P],rhodot_FPR_all_int2[P])/rhodot_FPR_all_int2[P][-1]))
+    mean.append(np.mean([
+            trapz([0,rhodot_FPR_all_int05[P][-1]],[0,rhodot_FPR_all_int05[P][-1]])/rhodot_FPR_all_int05[P][-1],
+            trapz([0,rhodot_FPR_all_int1[P][-1]],[0,rhodot_FPR_all_int1[P][-1]])/rhodot_FPR_all_int1[P][-1],
+            trapz([0,rhodot_FPR_all_int2[P][-1]],[0,rhodot_FPR_all_int2[P][-1]])/rhodot_FPR_all_int2[P][-1]]))
+    ln1=plt.plot(rhodot_FPR_all_int05[P],rhodot_TPR_all_int05[P],'g--',label='0.5hr')
+    sc1=plt.scatter(rhodot_FPR_all_int05[P][::20],rhodot_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int05[P],rhodot_FPR_all_int05[P])/rhodot_FPR_all_int05[P][-1]))
+    ln2=plt.plot(rhodot_FPR_all_int1[P],rhodot_TPR_all_int1[P],'r-',label='1hr')
+    sc2=plt.scatter(rhodot_FPR_all_int1[P][::20],rhodot_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int1[P],rhodot_FPR_all_int1[P])/rhodot_FPR_all_int1[P][-1]))
+    ln3=plt.plot(rhodot_FPR_all_int2[P],rhodot_TPR_all_int2[P],'b-.',label='2hr')
+    sc3=plt.scatter(rhodot_FPR_all_int2[P][::20],rhodot_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int2[P],rhodot_FPR_all_int2[P])/rhodot_FPR_all_int2[P][-1]))
     plt.xlim([-0.1,1.1])
     plt.ylim([-0.1,1.1])
-    plt.legend(fontsize=8,loc='lower right')
+    legend=ax.legend(handles=[sc1,sc2,sc3],fontsize=8,loc='lower right')
     plt.axis('equal')
     if P == 0:
         plt.annotate('0.4km', xy=(0.03, 0.9), xycoords='axes fraction')
@@ -318,6 +310,8 @@ for P in range(9):
         plt.annotate('0.8km', xy=(0.03, 0.9), xycoords='axes fraction')
         plt.yticks([])
         plt.xticks([])
+        ax.legend(handles=[ln1[0],ln2[0],ln3[0]],loc='upper center', bbox_to_anchor=(0.5, 1.2),fontsize=8,shadow=False, ncol=3)
+        plt.gca().add_artist(legend)
     elif P==2:
         plt.annotate('1.2km', xy=(0.03, 0.9), xycoords='axes fraction')
         plt.yticks([])
@@ -359,14 +353,14 @@ gs = gridspec.GridSpec(3, 3)
 gs.update(wspace=0.05, hspace=0.05)
 
 for P in range(9):
-    plt.subplot(gs[P])
+    ax=plt.subplot(gs[P])
     plt.plot([0,1],[0,1],'k:')
-    plt.plot(s1_FPR_all_int05[P],s1_TPR_all_int05[P],'g--')
-    plt.scatter(s1_FPR_all_int05[P][::20],s1_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(s1_TPR_all_int05[P],s1_FPR_all_int05[P])/s1_FPR_all_int05[P][-1]))
-    plt.plot(s1_FPR_all_int1[P],s1_TPR_all_int1[P],'r-')
-    plt.scatter(s1_FPR_all_int1[P][::20],s1_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(s1_TPR_all_int1[P],s1_FPR_all_int1[P])/s1_FPR_all_int1[P][-1]))
-    plt.plot(s1_FPR_all_int2[P],s1_TPR_all_int2[P],'b-.')
-    plt.scatter(s1_FPR_all_int2[P][::20],s1_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])/s1_FPR_all_int2[P][-1]))
+    ln1=plt.plot(s1_FPR_all_int05[P],s1_TPR_all_int05[P],'g--',label='0.5hr')
+    sc1=plt.scatter(s1_FPR_all_int05[P][::20],s1_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(s1_TPR_all_int05[P],s1_FPR_all_int05[P])/s1_FPR_all_int05[P][-1]))
+    ln2=plt.plot(s1_FPR_all_int1[P],s1_TPR_all_int1[P],'r-',label='1hr')
+    sc2=plt.scatter(s1_FPR_all_int1[P][::20],s1_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(s1_TPR_all_int1[P],s1_FPR_all_int1[P])/s1_FPR_all_int1[P][-1]))
+    ln3=plt.plot(s1_FPR_all_int2[P],s1_TPR_all_int2[P],'b-.',label='2hr')
+    sc3=plt.scatter(s1_FPR_all_int2[P][::20],s1_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])/s1_FPR_all_int2[P][-1]))
     #        trapz(s1_TPR_all_int2[P],[x/s1_FPR_all_int2[P][-1] for x in s1_FPR_all_int2[P]])))
     #        trapz([y/s1_TPR_all_int2[P][-1] for y in s1_TPR_all_int2[P]],[x/s1_FPR_all_int2[P][-1] for x in s1_FPR_all_int2[P]])))
     #        trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])/s1_FPR_all_int2[P][-1]))
@@ -374,7 +368,7 @@ for P in range(9):
     #        trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])))
     plt.xlim([-0.1,1.1])
     plt.ylim([-0.1,1.1])
-    plt.legend(fontsize=8,loc='lower right')
+    legend=ax.legend(handles=[sc1,sc2,sc3],fontsize=8,loc='lower right')
     plt.axis('equal')
     if P == 0:
         plt.annotate('0.4km', xy=(0.03, 0.9), xycoords='axes fraction')
@@ -384,6 +378,8 @@ for P in range(9):
         plt.annotate('0.8km', xy=(0.03, 0.9), xycoords='axes fraction')
         plt.yticks([])
         plt.xticks([])
+        ax.legend(handles=[ln1[0],ln2[0],ln3[0]],loc='upper center', bbox_to_anchor=(0.5, 1.2),fontsize=8,shadow=False, ncol=3)
+        plt.gca().add_artist(legend)
     elif P==2:
         plt.annotate('1.2km', xy=(0.03, 0.9), xycoords='axes fraction')
         plt.yticks([])
