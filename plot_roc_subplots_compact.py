@@ -370,6 +370,7 @@ for P in range(9):
     plt.ylim([-0.1,1.1])
     legend=ax.legend(handles=[sc1,sc2,sc3],fontsize=8,loc='lower right')
     plt.axis('equal')
+    #update
     if P == 0:
         plt.annotate('0.4km', xy=(0.03, 0.9), xycoords='axes fraction')
         plt.yticks(**tickfont)
