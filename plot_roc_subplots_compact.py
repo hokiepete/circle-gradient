@@ -58,8 +58,10 @@ for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2
         print(radius,percent)
         passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}_int=-1.npy'.format(90,radius))+time_step_offset          
         #passing_times = np.load('passing_files/passing_times_{0:03d}th_percentile_radius={1:05d}.npy'.format(percent,radius))+24            
-        thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
-        thresh_s1 = -np.percentile(-s1[s1<0],percent)
+        #thresh_rhodot = -np.percentile(-rhodot[rhodot<0],percent)
+        #thresh_s1 = -np.percentile(-s1[s1<0],percent)
+        thresh_rhodot = -np.percentile(-rhodot,percent)
+        thresh_s1 = -np.percentile(-s1,percent)
         
         rhodot_true_positive = 0
         rhodot_false_positive = 0
@@ -292,12 +294,32 @@ for P in range(9):
             trapz([0,rhodot_FPR_all_int05[P][-1]],[0,rhodot_FPR_all_int05[P][-1]])/rhodot_FPR_all_int05[P][-1],
             trapz([0,rhodot_FPR_all_int1[P][-1]],[0,rhodot_FPR_all_int1[P][-1]])/rhodot_FPR_all_int1[P][-1],
             trapz([0,rhodot_FPR_all_int2[P][-1]],[0,rhodot_FPR_all_int2[P][-1]])/rhodot_FPR_all_int2[P][-1]]))
+    '''
     ln1=plt.plot(rhodot_FPR_all_int05[P],rhodot_TPR_all_int05[P],'g--',label='0.5hr')
     sc1=plt.scatter(rhodot_FPR_all_int05[P][::20],rhodot_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int05[P],rhodot_FPR_all_int05[P])/rhodot_FPR_all_int05[P][-1]))
     ln2=plt.plot(rhodot_FPR_all_int1[P],rhodot_TPR_all_int1[P],'r-',label='1hr')
     sc2=plt.scatter(rhodot_FPR_all_int1[P][::20],rhodot_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int1[P],rhodot_FPR_all_int1[P])/rhodot_FPR_all_int1[P][-1]))
     ln3=plt.plot(rhodot_FPR_all_int2[P],rhodot_TPR_all_int2[P],'b-.',label='2hr')
     sc3=plt.scatter(rhodot_FPR_all_int2[P][::20],rhodot_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int2[P],rhodot_FPR_all_int2[P])/rhodot_FPR_all_int2[P][-1]))
+    '''
+    ln1=plt.plot(rhodot_FPR_all_int05[P],rhodot_TPR_all_int05[P],'g--',label='0.5hr')
+    sc1=plt.scatter(rhodot_FPR_all_int05[P][::20],rhodot_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int05[P],rhodot_FPR_all_int05[P])))
+    ln2=plt.plot(rhodot_FPR_all_int1[P],rhodot_TPR_all_int1[P],'r-',label='1hr')
+    sc2=plt.scatter(rhodot_FPR_all_int1[P][::20],rhodot_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int1[P],rhodot_FPR_all_int1[P])))
+    ln3=plt.plot(rhodot_FPR_all_int2[P],rhodot_TPR_all_int2[P],'b-.',label='2hr')
+    sc3=plt.scatter(rhodot_FPR_all_int2[P][::20],rhodot_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int2[P],rhodot_FPR_all_int2[P])))
+    '''
+    corr_fac05 = 0.5/trapz([0,rhodot_FPR_all_int05[P][-1]],[0,rhodot_FPR_all_int05[P][-1]])
+    corr_fac1 = 0.5/trapz([0,rhodot_FPR_all_int1[P][-1]],[0,rhodot_FPR_all_int1[P][-1]])
+    corr_fac2 = 0.5/trapz([0,rhodot_FPR_all_int2[P][-1]],[0,rhodot_FPR_all_int2[P][-1]])
+    
+    ln1=plt.plot(rhodot_FPR_all_int05[P],rhodot_TPR_all_int05[P],'g--',label='0.5hr')
+    sc1=plt.scatter(rhodot_FPR_all_int05[P][::20],rhodot_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int05[P],rhodot_FPR_all_int05[P])*corr_fac05))
+    ln2=plt.plot(rhodot_FPR_all_int1[P],rhodot_TPR_all_int1[P],'r-',label='1hr')
+    sc2=plt.scatter(rhodot_FPR_all_int1[P][::20],rhodot_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int1[P],rhodot_FPR_all_int1[P])*corr_fac1))
+    ln3=plt.plot(rhodot_FPR_all_int2[P],rhodot_TPR_all_int2[P],'b-.',label='2hr')
+    sc3=plt.scatter(rhodot_FPR_all_int2[P][::20],rhodot_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(rhodot_TPR_all_int2[P],rhodot_FPR_all_int2[P])*corr_fac2))
+    '''
     plt.xlim([-0.1,1.1])
     plt.ylim([-0.1,1.1])
     legend=ax.legend(handles=[sc1,sc2,sc3],fontsize=8,loc='lower right')
@@ -343,11 +365,11 @@ for P in range(9):
         plt.yticks([])
         plt.xticks(**tickfont)
         
-plt.savefig('Rhodot_subplots_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('Rhodot_subplots_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots_v2.3.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots_v2.3.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
 #plt.savefig('Rhodot_subplots_hunterflight_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
 #plt.savefig('Rhodot_subplots_hunterflight_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-
+'''
 plt.figure(2,figsize=FigSize)
 gs = gridspec.GridSpec(3, 3)
 gs.update(wspace=0.05, hspace=0.05)
