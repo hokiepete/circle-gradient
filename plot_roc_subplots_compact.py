@@ -34,8 +34,8 @@ rhodot_TPR_all_int2 = []
 rhodot_FPR_all_int2 = []
 s1_TPR_all_int2 = []
 s1_FPR_all_int2 = []
-with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
-#with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
+#with hp.File('850mb_300m_10min_NAM_Rhodot_Origin_t=0-215hrs_Sept2017.hdf5','r') as data:
+with hp.File('hunterdata_r=02km_interpolated_2_cridges.hdf5','r') as data:
     rhodot = data['rhodot'][:].squeeze()
     s1 = data['s1'][:].squeeze()
     t = data['t'][:].squeeze()
@@ -365,11 +365,11 @@ for P in range(9):
         plt.yticks([])
         plt.xticks(**tickfont)
         
-plt.savefig('Rhodot_subplots_v2.3.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('Rhodot_subplots_v2.3.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('Rhodot_subplots_hunterflight_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('Rhodot_subplots_hunterflight_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-'''
+#plt.savefig('Rhodot_subplots_v2.3.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('Rhodot_subplots_v2.3.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots_hunterflight_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('Rhodot_subplots_hunterflight_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+
 plt.figure(2,figsize=FigSize)
 gs = gridspec.GridSpec(3, 3)
 gs.update(wspace=0.05, hspace=0.05)
@@ -378,11 +378,11 @@ for P in range(9):
     ax=plt.subplot(gs[P])
     plt.plot([0,1],[0,1],'k:')
     ln1=plt.plot(s1_FPR_all_int05[P],s1_TPR_all_int05[P],'g--',label='0.5hr')
-    sc1=plt.scatter(s1_FPR_all_int05[P][::20],s1_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(s1_TPR_all_int05[P],s1_FPR_all_int05[P])/s1_FPR_all_int05[P][-1]))
+    sc1=plt.scatter(s1_FPR_all_int05[P][::20],s1_TPR_all_int05[P][::20],color='g',label='{0:1.3f}'.format(trapz(s1_TPR_all_int05[P],s1_FPR_all_int05[P])))
     ln2=plt.plot(s1_FPR_all_int1[P],s1_TPR_all_int1[P],'r-',label='1hr')
-    sc2=plt.scatter(s1_FPR_all_int1[P][::20],s1_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(s1_TPR_all_int1[P],s1_FPR_all_int1[P])/s1_FPR_all_int1[P][-1]))
+    sc2=plt.scatter(s1_FPR_all_int1[P][::20],s1_TPR_all_int1[P][::20],color='r',label='{0:1.3f}'.format(trapz(s1_TPR_all_int1[P],s1_FPR_all_int1[P])))
     ln3=plt.plot(s1_FPR_all_int2[P],s1_TPR_all_int2[P],'b-.',label='2hr')
-    sc3=plt.scatter(s1_FPR_all_int2[P][::20],s1_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])/s1_FPR_all_int2[P][-1]))
+    sc3=plt.scatter(s1_FPR_all_int2[P][::20],s1_TPR_all_int2[P][::20],color='b',label='{0:1.3f}'.format(trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])))
     #        trapz(s1_TPR_all_int2[P],[x/s1_FPR_all_int2[P][-1] for x in s1_FPR_all_int2[P]])))
     #        trapz([y/s1_TPR_all_int2[P][-1] for y in s1_TPR_all_int2[P]],[x/s1_FPR_all_int2[P][-1] for x in s1_FPR_all_int2[P]])))
     #        trapz(s1_TPR_all_int2[P],s1_FPR_all_int2[P])/s1_FPR_all_int2[P][-1]))
@@ -434,9 +434,9 @@ for P in range(9):
         plt.yticks([])
         plt.xticks(**tickfont)
     
-plt.savefig('s1_subplots_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-plt.savefig('s1_subplots_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('s1_subplots_hunterflight_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
-#plt.savefig('s1_subplots_hunterflight_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+#plt.savefig('s1_subplots_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots_hunterflight_v2.eps'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
+plt.savefig('s1_subplots_hunterflight_v2.png'.format(radius), transparent=False, bbox_inches='tight',pad_inches=0)
 
 #'''
