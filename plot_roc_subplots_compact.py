@@ -16,12 +16,13 @@ epsilon = sys.float_info.epsilon
 matplotlib.rcParams['text.usetex']=True
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['lines.linewidth']=1
-matplotlib.rcParams['lines.markersize']=2
+matplotlib.rcParams['lines.markersize']=3
 plt.rc('font', **{'family': 'serif', 'serif': ['cmr10']})
 titlefont = {'fontsize':12}
 labelfont = {'fontsize':10}
 tickfont = {'fontsize':8}
 time_step_offset = 24
+
 rhodot_TPR_all_int05 = []
 rhodot_FPR_all_int05 = []
 s1_TPR_all_int05 = []
@@ -275,9 +276,6 @@ for radius in [400,800,1200,1600,2000,3000,5000,7500,10000]:#[200,500,800,1000,2
     s1_TPR_all_int05.append(s1_TPR_int05)
     s1_FPR_all_int05.append(s1_FPR_int05)
 
-
-
-
 #'''
 plt.close('all')
 figwidth = 6
@@ -421,6 +419,7 @@ for P in range(9):
         plt.yticks([])
         plt.xticks([])
     elif P==6:
+        #plt.scatter(s1_FPR_all_int1[P][15],s1_TPR_all_int1[P][15],color='r',marker="+",s=40)
         plt.annotate('5.0km', xy=(0.03, 0.9), xycoords='axes fraction')
         plt.yticks(**tickfont)
         plt.xticks(**tickfont)
